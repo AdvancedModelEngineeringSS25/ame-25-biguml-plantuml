@@ -10,7 +10,7 @@ import 'reflect-metadata';
 
 import { VSCodeConnector } from '@borkdominik-biguml/big-components';
 import { createRoot } from 'react-dom/client';
-import { HelloWorld } from '../browser/hello-world.component.js';
+import { ExportToPlantUML } from '../browser/export-to-plantUML.component.js';
 
 import '../../styles/index.css';
 
@@ -21,6 +21,6 @@ if (!element) {
 const root = createRoot(element);
 root.render(
     <VSCodeConnector debug={true}>
-        <HelloWorld></HelloWorld>
+        <ExportToPlantUML></ExportToPlantUML>
     </VSCodeConnector>
 );

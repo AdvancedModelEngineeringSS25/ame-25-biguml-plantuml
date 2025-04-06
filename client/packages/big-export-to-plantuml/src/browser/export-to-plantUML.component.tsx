@@ -8,27 +8,27 @@
  **********************************************************************************/
 import { VSCodeContext } from '@borkdominik-biguml/big-components';
 import { useCallback, useContext, useEffect, useState, type ReactElement } from 'react';
-import { HelloWorldActionResponse, RequestHelloWorldAction } from '../common/index.js';
+import { ExportToPlantUMLActionResponse, RequestExportToPlantUMLAction } from '../common/index.js';
 
 
-export function HelloWorld(): ReactElement {
+export function ExportToPlantUML(): ReactElement {
     const { listenAction, dispatchAction } = useContext(VSCodeContext);
     const [count, setCount] = useState(0);
 
     useEffect(() => {
         listenAction(action => {
-            if (HelloWorldActionResponse.is(action)) {
+            if (ExportToPlantUMLActionResponse.is(action)) {
                 setCount(action.count);
             }
         });
     }, [listenAction]);
 
     const increase1 = useCallback(() => {
-        dispatchAction(RequestHelloWorldAction.create({ increase: 1 }));
+        dispatchAction(RequestExportToPlantUMLAction.create({ increase: 1 }));
     }, [dispatchAction]);
 
     const increase5 = useCallback(() => {
-        dispatchAction(RequestHelloWorldAction.create({ increase: 5 }));
+        dispatchAction(RequestExportToPlantUMLAction.create({ increase: 5 }));
     }, [dispatchAction]);
 
     return (

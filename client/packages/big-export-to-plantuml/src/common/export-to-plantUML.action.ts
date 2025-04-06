@@ -11,19 +11,19 @@ import { Action, RequestAction, type ResponseAction } from '@eclipse-glsp/protoc
 
 // ========= This action will be handled by the GLSP Client =========
 
-export interface RequestHelloWorldAction extends RequestAction<HelloWorldActionResponse> {
-    kind: typeof RequestHelloWorldAction.KIND;
+export interface RequestExportToPlantUMLAction extends RequestAction<ExportToPlantUMLActionResponse> {
+    kind: typeof RequestExportToPlantUMLAction.KIND;
     increase: number;
 }
 
-export namespace RequestHelloWorldAction {
-    export const KIND = 'requestHelloWorld';
+export namespace RequestExportToPlantUMLAction {
+    export const KIND = 'requestExportToPlantUML';
 
-    export function is(object: unknown): object is RequestHelloWorldAction {
+    export function is(object: unknown): object is RequestExportToPlantUMLAction {
         return RequestAction.hasKind(object, KIND);
     }
 
-    export function create(options: Omit<RequestHelloWorldAction, 'kind' | 'requestId'>): RequestHelloWorldAction {
+    export function create(options: Omit<RequestExportToPlantUMLAction, 'kind' | 'requestId'>): RequestExportToPlantUMLAction {
         return {
             kind: KIND,
             requestId: '',
@@ -32,20 +32,20 @@ export namespace RequestHelloWorldAction {
     }
 }
 
-export interface HelloWorldActionResponse extends ResponseAction {
-    kind: typeof HelloWorldActionResponse.KIND;
+export interface ExportToPlantUMLActionResponse extends ResponseAction {
+    kind: typeof ExportToPlantUMLActionResponse.KIND;
     count: number;
 }
-export namespace HelloWorldActionResponse {
-    export const KIND = 'helloWorldResponse';
+export namespace ExportToPlantUMLActionResponse {
+    export const KIND = 'ExportToPlantUMLResponse';
 
-    export function is(object: unknown): object is HelloWorldActionResponse {
+    export function is(object: unknown): object is ExportToPlantUMLActionResponse {
         return Action.hasKind(object, KIND);
     }
 
     export function create(
-        options?: Omit<HelloWorldActionResponse, 'kind' | 'responseId'> & { responseId?: string }
-    ): HelloWorldActionResponse {
+        options?: Omit<ExportToPlantUMLActionResponse, 'kind' | 'responseId'> & { responseId?: string }
+    ): ExportToPlantUMLActionResponse {
         return {
             kind: KIND,
             responseId: '',

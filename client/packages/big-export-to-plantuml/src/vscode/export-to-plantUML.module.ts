@@ -9,21 +9,21 @@
 
 import { TYPES } from '@borkdominik-biguml/big-vscode-integration/vscode';
 import { ContainerModule } from 'inversify';
-import { HelloWorldProvider, HelloWorldViewId } from './hello-world.provider.js';
+import { ExportToPlantUMLProvider, ExportToPlantUMLViewId } from './export-to-plantUML.provider.js';
 
-export function helloWorldModule(viewId: string) {
+export function ExportToPlantUMLModule(viewId: string) {
     return new ContainerModule(bind => {
-        bind(HelloWorldViewId).toConstantValue(viewId);
-        bind(HelloWorldProvider).toSelf().inSingletonScope();
-        bind(TYPES.RootInitialization).toService(HelloWorldProvider);
+        bind(ExportToPlantUMLViewId).toConstantValue(viewId);
+        bind(ExportToPlantUMLProvider).toSelf().inSingletonScope();
+        bind(TYPES.RootInitialization).toService(ExportToPlantUMLProvider);
 
         // Handle the request vscode side
         // This will prevent the glsp to handle the request
         // Remember to comment out the the glsp client handler!
-        // In HelloWorldActionHandler implementation GLSP has priority over vscode
+        // In ExportToPlantUMLActionHandler implementation GLSP has priority over vscode
 
-        // bind(HelloWorldActionHandler).toSelf().inSingletonScope();
-        // bind(TYPES.Disposable).toService(HelloWorldActionHandler);
-        // bind(TYPES.RootInitialization).toService(HelloWorldActionHandler);
+        // bind(ExportToPlantUMLActionHandler).toSelf().inSingletonScope();
+        // bind(TYPES.Disposable).toService(ExportToPlantUMLActionHandler);
+        // bind(TYPES.RootInitialization).toService(ExportToPlantUMLActionHandler);
     });
 }

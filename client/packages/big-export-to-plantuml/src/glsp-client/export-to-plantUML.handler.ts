@@ -9,17 +9,17 @@
 
 import type { Action, IActionHandler, ICommand } from '@eclipse-glsp/client';
 import { injectable } from 'inversify';
-import { HelloWorldActionResponse, RequestHelloWorldAction } from '../common/hello-world.action.js';
+import { ExportToPlantUMLActionResponse, RequestExportToPlantUMLAction } from '../common/export-to-plantUML.action.js';
 
 @injectable()
-export class HelloWorldHandler implements IActionHandler {
+export class ExportToPlantUMLHandler implements IActionHandler {
     private count = 0;
 
     handle(action: Action): ICommand | Action | void {
-        if (RequestHelloWorldAction.is(action)) {
+        if (RequestExportToPlantUMLAction.is(action)) {
             this.count += action.increase;
             console.log(`Hello World from the GLSP Client: ${this.count}`);
-            return HelloWorldActionResponse.create({
+            return ExportToPlantUMLActionResponse.create({
                 count: this.count
             });
         }

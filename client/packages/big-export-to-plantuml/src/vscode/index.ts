@@ -7,5 +7,5 @@
  * SPDX-License-Identifier: MIT
  **********************************************************************************/
 
-export * from './hello-world.module.js';
-export * from './hello-world.provider.js';
+export * from './export-to-plantUML.module.js';
+export * from './export-to-plantUML.provider.js';
