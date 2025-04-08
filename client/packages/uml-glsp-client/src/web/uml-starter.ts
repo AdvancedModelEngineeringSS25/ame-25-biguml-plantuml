@@ -42,7 +42,7 @@ class UMLStarter extends GLSPStarter {
             outlineModule,
             minimapModule,
             propertyPaletteModule,
-            helloWorldModule
+            helloWorldModule,
         );
 
         return container;

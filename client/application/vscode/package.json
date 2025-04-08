@@ -76,6 +76,12 @@
         "enablement": "activeCustomEditorId == 'bigUML.diagramView'"
       },
       {
+        "command": "bigUML.exportAsPlantUML",
+        "title": "Export as PlantUML",
+        "category": "bigUML",
+        "enablement": "activeCustomEditorId == 'bigUML.diagramView'"
+      },
+      {
         "command": "bigUML.fit",
         "title": "Fit to Screen",
         "category": "bigUML",
@@ -267,7 +273,7 @@
           "id": "bigUML.panel.hello-world",
           "name": "Hello World",
           "type": "webview",
-          "when": "bigUML.isRunning"
+          "when": "bigUML.isRunning && false"
         }
       ]
     },
@@ -289,6 +295,7 @@
   ],
   "dependencies": {
     "@borkdominik-biguml/big-hello-world": "*",
+    "@borkdominik-biguml/big-export-to-plantuml": "*",
     "@borkdominik-biguml/big-minimap": "*",
     "@borkdominik-biguml/big-outline": "*",
     "@borkdominik-biguml/big-property-palette": "*",

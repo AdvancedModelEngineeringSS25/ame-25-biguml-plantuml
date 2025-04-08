@@ -42,5 +42,8 @@ export const VSCodeSettings = {
     },
     helloWorld: {
         viewId: 'bigUML.panel.hello-world'
-    }
+    },
+    exportToPlantUML: {
+        viewId: 'bigUML.panel.export-to-plantuml'
+    },
 } as const;

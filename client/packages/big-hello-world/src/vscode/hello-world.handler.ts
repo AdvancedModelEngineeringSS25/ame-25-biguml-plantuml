@@ -38,32 +38,6 @@ export class HelloWorldActionHandler implements Disposable {
             this.actionListener.handleVSCodeRequest<RequestHelloWorldAction>(RequestHelloWorldAction.KIND, async message => {
                 this.count += message.action.increase;
                 console.log(`Hello World from VS Code new: ${this.count}`);
-
-                // Print the current model state
-                const model = this.modelState.getModelState();
-                if (model) {
-                    const sourceModel = model.getSourceModel();
-                    console.log('Current model state:', sourceModel);
-
-                    // Print the diagram elements in formatted JSON
-                    if (sourceModel.packagedElement && sourceModel.packagedElement.length > 0) {
-                        console.log('Diagram elements:');
-                        console.log(JSON.stringify(sourceModel.packagedElement, null, 2));
-
-                        // Print summary of elements by type
-                        const elementTypes = sourceModel.packagedElement.reduce((acc: Record<string, number>, element: any) => {
-                            const type = element.eClass?.split('#//').pop() || 'unknown';
-                            acc[type] = (acc[type] || 0) + 1;
-                            return acc;
-                        }, {});
-                        console.log('Element types summary:', elementTypes);
-                    } else {
-                        console.log('No diagram elements found');
-                    }
-                } else {
-                    console.log('No model state available');
-                }
-
                 return HelloWorldActionResponse.create({
                     count: this.count
                 });
