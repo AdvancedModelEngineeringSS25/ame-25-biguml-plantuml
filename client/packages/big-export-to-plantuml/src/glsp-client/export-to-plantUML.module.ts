@@ -11,7 +11,7 @@ import { ExtensionActionKind } from '@eclipse-glsp/vscode-integration-webview/li
 import { ExportToPlantUMLActionResponse } from '../common/export-to-plantUML.action.js';
 // import { ExportToPlantUMLHandler } from './export-to-plantUML.handler.js';
 
-export const ExportToPlantUMLModule = new FeatureModule((bind) => {
+export const ExportToPlantUMLModule = new FeatureModule(bind => {
     // const context = { bind, unbind, isBound, rebind };
     // Register the ExportToPlantUMLHandler to handle the RequestExportToPlantUMLAction
     // bind(ExportToPlantUMLHandler).toSelf().inSingletonScope();
