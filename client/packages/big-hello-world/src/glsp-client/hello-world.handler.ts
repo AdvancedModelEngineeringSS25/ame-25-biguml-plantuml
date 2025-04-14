@@ -7,14 +7,15 @@
  * SPDX-License-Identifier: MIT
  *********************************************************************************/
 
-/* import type { IActionHandler } from '@eclipse-glsp/client';
+import type { Action, IActionHandler, ICommand } from '@eclipse-glsp/client';
 import { injectable } from 'inversify';
+import { HelloWorldActionResponse, RequestHelloWorldAction } from '../common/hello-world.action.js';
 
 @injectable()
 export class HelloWorldHandler implements IActionHandler {
     private count = 0;
 
-     handle(action: Action): ICommand | Action | void {
+    handle(action: Action): ICommand | Action | void {
         if (RequestHelloWorldAction.is(action)) {
             this.count += action.increase;
             console.log(`Hello World from the GLSP Client: ${this.count}`);
@@ -23,6 +24,4 @@ export class HelloWorldHandler implements IActionHandler {
             });
         }
     }
-        
 }
-*/

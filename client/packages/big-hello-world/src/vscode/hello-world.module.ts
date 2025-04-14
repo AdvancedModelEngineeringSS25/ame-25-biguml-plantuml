@@ -9,7 +9,6 @@
 
 import { TYPES } from '@borkdominik-biguml/big-vscode-integration/vscode';
 import { ContainerModule } from 'inversify';
-import { HelloWorldActionHandler } from './hello-world.handler.js';
 import { HelloWorldProvider, HelloWorldViewId } from './hello-world.provider.js';
 
 export function helloWorldModule(viewId: string) {
@@ -23,8 +22,8 @@ export function helloWorldModule(viewId: string) {
         // Remember to comment out the the glsp client handler!
         // In HelloWorldActionHandler implementation GLSP has priority over vscode
 
-        bind(HelloWorldActionHandler).toSelf().inSingletonScope();
-        bind(TYPES.Disposable).toService(HelloWorldActionHandler);
-        bind(TYPES.RootInitialization).toService(HelloWorldActionHandler);
+        // bind(HelloWorldActionHandler).toSelf().inSingletonScope();
+        // bind(TYPES.Disposable).toService(HelloWorldActionHandler);
+        // bind(TYPES.RootInitialization).toService(HelloWorldActionHandler);
     });
 }
