@@ -116,6 +116,7 @@ export class ExportToPlantUMLActionHandler implements Disposable {
                     } catch (error) {
                         const errorMessage = `Failed to save model: ${error instanceof Error ? error.message : String(error)}`;
                         await this.logError(errorMessage);
+                        vscode.window.showErrorMessage(`Failed to save model: ${errorMessage}`);
                         return ExportToPlantUMLActionResponse.create({
                             success: false,
                             message: errorMessage
@@ -124,6 +125,7 @@ export class ExportToPlantUMLActionHandler implements Disposable {
                 } catch (error) {
                     const errorMessage = `Unexpected error during export: ${error instanceof Error ? error.message : String(error)}`;
                     await this.logError(errorMessage);
+                    vscode.window.showErrorMessage(`Failed to save model: ${errorMessage}`);
                     return ExportToPlantUMLActionResponse.create({
                         success: false,
                         message: errorMessage
