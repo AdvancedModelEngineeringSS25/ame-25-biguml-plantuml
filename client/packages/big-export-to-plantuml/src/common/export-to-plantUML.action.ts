@@ -13,7 +13,6 @@ import { Action, RequestAction, type ResponseAction } from '@eclipse-glsp/protoc
 
 export interface RequestExportToPlantUMLAction extends RequestAction<ExportToPlantUMLActionResponse> {
     kind: typeof RequestExportToPlantUMLAction.KIND;
-    increase: number;
 }
 
 export namespace RequestExportToPlantUMLAction {
@@ -34,7 +33,6 @@ export namespace RequestExportToPlantUMLAction {
 
 export interface ExportToPlantUMLActionResponse extends ResponseAction {
     kind: typeof ExportToPlantUMLActionResponse.KIND;
-    count: number;
 }
 export namespace ExportToPlantUMLActionResponse {
     export const KIND = 'ExportToPlantUMLResponse';
@@ -49,7 +47,6 @@ export namespace ExportToPlantUMLActionResponse {
         return {
             kind: KIND,
             responseId: '',
-            count: 0,
             ...options
         };
     }

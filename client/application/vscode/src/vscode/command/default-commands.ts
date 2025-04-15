@@ -20,7 +20,7 @@ export class DefaultCommandsProvider {
         @inject(TYPES.ExtensionContext) protected readonly extensionContext: vscode.ExtensionContext,
         @inject(TYPES.GLSPDiagramSettings) protected readonly diagramSettings: GLSPDiagramSettings,
         @inject(TYPES.GLSPVSCodeConnector) protected readonly connector: BIGGLSPVSCodeConnector
-    ) { }
+    ) {}
 
     @postConstruct()
     protected init(): void {
@@ -47,7 +47,7 @@ export class DefaultCommandsProvider {
                 this.connector.sendActionToActiveClient(RequestExportSvgAction.create());
             }),
             vscode.commands.registerCommand(`${this.diagramSettings.name}.exportAsPlantUML`, () => {
-                this.connector.sendActionToActiveClient(RequestExportToPlantUMLAction.create({ increase: 1 }));
+                this.connector.sendActionToActiveClient(RequestExportToPlantUMLAction.create({}));
             }),
             vscode.commands.registerCommand(`${this.diagramSettings.name}.editor.activateResizeMode`, () => {
                 this.connector.sendActionToActiveClient(EnableToolsAction.create(['glsp.resize-tool']));

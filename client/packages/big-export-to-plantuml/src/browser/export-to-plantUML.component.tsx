@@ -6,35 +6,13 @@
  *
  * SPDX-License-Identifier: MIT
  **********************************************************************************/
-import { VSCodeContext } from '@borkdominik-biguml/big-components';
-import { useCallback, useContext, useEffect, useState, type ReactElement } from 'react';
-import { ExportToPlantUMLActionResponse, RequestExportToPlantUMLAction } from '../common/index.js';
+
+import { type ReactElement } from 'react';
 
 export function ExportToPlantUML(): ReactElement {
-    const { listenAction, dispatchAction } = useContext(VSCodeContext);
-    const [count, setCount] = useState(0);
-
-    useEffect(() => {
-        listenAction(action => {
-            if (ExportToPlantUMLActionResponse.is(action)) {
-                setCount(action.count);
-            }
-        });
-    }, [listenAction]);
-
-    const increase1 = useCallback(() => {
-        dispatchAction(RequestExportToPlantUMLAction.create({ increase: 1 }));
-    }, [dispatchAction]);
-
-    const increase5 = useCallback(() => {
-        dispatchAction(RequestExportToPlantUMLAction.create({ increase: 5 }));
-    }, [dispatchAction]);
-
     return (
         <div>
-            <span>Hello World! {count}</span>
-            <button onClick={() => increase1()}>Increase 1</button>
-            <button onClick={() => increase5()}>Increase 5</button>
+            <span>Export to PlantUML {}</span>
         </div>
     );
 }
