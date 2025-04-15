@@ -9,8 +9,6 @@
 
 import { Action, RequestAction, type ResponseAction } from '@eclipse-glsp/protocol';
 
-// ========= This action will be handled by the GLSP Client =========
-
 export interface RequestExportToPlantUMLAction extends RequestAction<ExportToPlantUMLActionResponse> {
     kind: typeof RequestExportToPlantUMLAction.KIND;
 }
@@ -33,9 +31,12 @@ export namespace RequestExportToPlantUMLAction {
 
 export interface ExportToPlantUMLActionResponse extends ResponseAction {
     kind: typeof ExportToPlantUMLActionResponse.KIND;
+    success: boolean;
+    message?: string;
 }
+
 export namespace ExportToPlantUMLActionResponse {
-    export const KIND = 'ExportToPlantUMLResponse';
+    export const KIND = 'exportToPlantUMLResponse';
 
     export function is(object: unknown): object is ExportToPlantUMLActionResponse {
         return Action.hasKind(object, KIND);
@@ -47,6 +48,8 @@ export namespace ExportToPlantUMLActionResponse {
         return {
             kind: KIND,
             responseId: '',
+            success: true,
+            message: 'test',
             ...options
         };
     }

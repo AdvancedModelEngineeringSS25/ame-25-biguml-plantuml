@@ -6,6 +6,7 @@
  *
  * SPDX-License-Identifier: MIT
  **********************************************************************************/
+
 import { BIGReactWebview } from '@borkdominik-biguml/big-vscode-integration/vscode';
 import { inject, injectable, postConstruct } from 'inversify';
 import { ExportToPlantUMLActionResponse } from '../common/export-to-plantUML.action.js';
@@ -17,8 +18,8 @@ export class ExportToPlantUMLProvider extends BIGReactWebview {
     @inject(ExportToPlantUMLViewId)
     viewId: string;
 
-    protected override cssPath = ['hello-world', 'bundle.css'];
-    protected override jsPath = ['hello-world', 'bundle.js'];
+    protected cssPath = ['export-to-plantuml', 'bundle.css'];
+    protected jsPath = ['export-to-plantuml', 'bundle.js'];
     protected readonly actionCache = this.actionListener.createCache([ExportToPlantUMLActionResponse.KIND]);
 
     @postConstruct()
@@ -27,7 +28,6 @@ export class ExportToPlantUMLProvider extends BIGReactWebview {
 
         this.toDispose.push(this.actionCache);
     }
-
     protected override handleConnection(): void {
         super.handleConnection();
     }

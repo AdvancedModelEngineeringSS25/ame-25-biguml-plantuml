@@ -13,15 +13,10 @@ import { ExportToPlantUMLActionResponse, RequestExportToPlantUMLAction } from '.
 
 @injectable()
 export class ExportToPlantUMLHandler implements IActionHandler {
-    private count = 0;
-
     handle(action: Action): ICommand | Action | void {
         if (RequestExportToPlantUMLAction.is(action)) {
-            this.count += action.increase;
-            console.log(`Hello World from the GLSP Client: ${this.count}`);
-            return ExportToPlantUMLActionResponse.create({
-                count: this.count
-            });
+            console.log(`Hello World from the GLSP Client:`);
+            return ExportToPlantUMLActionResponse.create();
         }
     }
 }
