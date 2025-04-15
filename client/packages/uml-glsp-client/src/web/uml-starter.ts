@@ -7,6 +7,7 @@
  * SPDX-License-Identifier: MIT
  *********************************************************************************/
 
+import { exportToPlantUMLModule } from '@borkdominik-biguml/big-export-to-plantuml/glsp-client';
 import { helloWorldModule } from '@borkdominik-biguml/big-hello-world/glsp-client';
 import { minimapModule } from '@borkdominik-biguml/big-minimap/glsp-client';
 import { outlineModule } from '@borkdominik-biguml/big-outline/glsp-client';
@@ -43,6 +44,7 @@ class UMLStarter extends GLSPStarter {
             minimapModule,
             propertyPaletteModule,
             helloWorldModule,
+            exportToPlantUMLModule
         );
 
         return container;
