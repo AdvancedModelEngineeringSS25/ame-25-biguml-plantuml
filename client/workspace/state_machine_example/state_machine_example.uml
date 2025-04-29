@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="ASCII"?>
+<uml:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_qrUhYCIKEfCaZY4EQg-M0A">
+  <packagedElement xsi:type="uml:StateMachine" xmi:id="_rlhf0CIKEfCaZY4EQg-M0A" name="StateMachine">
+    <region xmi:id="_r5ouoCIKEfCaZY4EQg-M0A" name="Region">
+      <transition xmi:id="_y3JTUCIKEfCaZY4EQg-M0A" source="_vYeNACIKEfCaZY4EQg-M0A" target="_v1XkYCIKEfCaZY4EQg-M0A"/>
+      <transition xmi:id="_OfQe0CILEfCaZY4EQg-M0A" source="_v1XkYCIKEfCaZY4EQg-M0A" target="_N569ICILEfCaZY4EQg-M0A"/>
+      <subvertex xsi:type="uml:Pseudostate" xmi:id="_vYeNACIKEfCaZY4EQg-M0A" name="Pseudostate"/>
+      <subvertex xsi:type="uml:State" xmi:id="_v1XkYCIKEfCaZY4EQg-M0A" name="State1">
+        <region xmi:id="_wIVjsCIKEfCaZY4EQg-M0A" name="Region">
+          <transition xmi:id="_zZmgICIKEfCaZY4EQg-M0A" source="_xZPx8CIKEfCaZY4EQg-M0A" target="_xsGcgCIKEfCaZY4EQg-M0A"/>
+          <transition xmi:id="_1115ECIKEfCaZY4EQg-M0A" source="_1QUKICIKEfCaZY4EQg-M0A" target="_xsGcgCIKEfCaZY4EQg-M0A"/>
+          <subvertex xsi:type="uml:State" xmi:id="_xZPx8CIKEfCaZY4EQg-M0A" name="State2"/>
+          <subvertex xsi:type="uml:State" xmi:id="_xsGcgCIKEfCaZY4EQg-M0A" name="State3"/>
+          <subvertex xsi:type="uml:Pseudostate" xmi:id="_1QUKICIKEfCaZY4EQg-M0A" name="Pseudostate"/>
+        </region>
+      </subvertex>
+      <subvertex xsi:type="uml:FinalState" xmi:id="_N569ICILEfCaZY4EQg-M0A" name="FinalState"/>
+    </region>
+  </packagedElement>
+</uml:Model>

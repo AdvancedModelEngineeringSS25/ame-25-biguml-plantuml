@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="ASCII"?>
+<uml:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_uP4RMCKiEfC-j5SEH_SoWg">
+  <packagedElement xsi:type="uml:Node" xmi:id="_4H8bICKlEfC-j5SEH_SoWg" name="Node">
+    <generalization xmi:id="_6uPH8CKlEfC-j5SEH_SoWg" general="_4YVAgCKlEfC-j5SEH_SoWg"/>
+    <ownedAttribute xmi:id="_7dy8oSKlEfC-j5SEH_SoWg" name="Node3" type="_4jUvkCKlEfC-j5SEH_SoWg" association="_7dy8oCKlEfC-j5SEH_SoWg">
+      <lowerValue xsi:type="uml:LiteralInteger" xmi:id="_7dy8oiKlEfC-j5SEH_SoWg" value="1"/>
+      <upperValue xsi:type="uml:LiteralUnlimitedNatural" xmi:id="_7dy8oyKlEfC-j5SEH_SoWg" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xsi:type="uml:Node" xmi:id="_4YVAgCKlEfC-j5SEH_SoWg" name="Node2"/>
+  <packagedElement xsi:type="uml:Node" xmi:id="_4jUvkCKlEfC-j5SEH_SoWg" name="Node3">
+    <ownedAttribute xmi:id="_7dy8pCKlEfC-j5SEH_SoWg" name="Node" type="_4H8bICKlEfC-j5SEH_SoWg" association="_7dy8oCKlEfC-j5SEH_SoWg">
+      <lowerValue xsi:type="uml:LiteralInteger" xmi:id="_7dy8pSKlEfC-j5SEH_SoWg" value="1"/>
+      <upperValue xsi:type="uml:LiteralUnlimitedNatural" xmi:id="_7dy8piKlEfC-j5SEH_SoWg" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xsi:type="uml:Node" xmi:id="_4t1WcCKlEfC-j5SEH_SoWg" name="Node1"/>
+  <packagedElement xsi:type="uml:Dependency" xmi:id="_6CLTMCKlEfC-j5SEH_SoWg" client="_4H8bICKlEfC-j5SEH_SoWg" supplier="_4t1WcCKlEfC-j5SEH_SoWg"/>
+  <packagedElement xsi:type="uml:CommunicationPath" xmi:id="_7dy8oCKlEfC-j5SEH_SoWg" name="CommunicationPath" memberEnd="_7dy8oSKlEfC-j5SEH_SoWg _7dy8pCKlEfC-j5SEH_SoWg"/>
+  <packagedElement xsi:type="uml:Artifact" xmi:id="_8GG50CKlEfC-j5SEH_SoWg" name="Artifact">
+    <manifestation xmi:id="_9WGiECKlEfC-j5SEH_SoWg" supplier="_4t1WcCKlEfC-j5SEH_SoWg" utilizedElement="_4t1WcCKlEfC-j5SEH_SoWg"/>
+  </packagedElement>
+  <packagedElement xsi:type="uml:Artifact" xmi:id="_8TPW4CKlEfC-j5SEH_SoWg" name="Artifact"/>
+  <packagedElement xsi:type="uml:Dependency" xmi:id="_80NV8CKlEfC-j5SEH_SoWg" client="_8GG50CKlEfC-j5SEH_SoWg" supplier="_8TPW4CKlEfC-j5SEH_SoWg"/>
+</uml:Model>

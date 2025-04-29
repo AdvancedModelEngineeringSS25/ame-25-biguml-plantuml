@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="ASCII"?>
+<unotation:UMLDiagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:notation="http://www.eclipse.org/glsp/notation" xmlns:unotation="http://www.borkdominik.com/big-glsp/uml/unotation" xmi:id="_qrTTQCIKEfCaZY4EQg-M0A" diagramType="STATE_MACHINE">
+  <semanticElement xmi:id="_qrVvgCIKEfCaZY4EQg-M0A" elementId="_qrUhYCIKEfCaZY4EQg-M0A"/>
+  <elements xsi:type="notation:Shape" xmi:id="_rlhf0SIKEfCaZY4EQg-M0A">
+    <semanticElement xmi:id="_rlhf0iIKEfCaZY4EQg-M0A" elementId="_rlhf0CIKEfCaZY4EQg-M0A"/>
+    <position xmi:id="_rlhf0yIKEfCaZY4EQg-M0A" x="330.0" y="180.0"/>
+    <size xmi:id="_rlhf1CIKEfCaZY4EQg-M0A" width="60.0" height="45.0"/>
+  </elements>
+  <elements xsi:type="notation:Shape" xmi:id="_r5ouoSIKEfCaZY4EQg-M0A">
+    <semanticElement xmi:id="_r5ouoiIKEfCaZY4EQg-M0A" elementId="_r5ouoCIKEfCaZY4EQg-M0A"/>
+    <position xmi:id="_tpwocCIKEfCaZY4EQg-M0A" x="2.0"/>
+    <size xmi:id="_tpwocSIKEfCaZY4EQg-M0A" width="511.4451141357422" height="338.0"/>
+  </elements>
+  <elements xsi:type="notation:Shape" xmi:id="_vYeNASIKEfCaZY4EQg-M0A">
+    <semanticElement xmi:id="_vYeNAiIKEfCaZY4EQg-M0A" elementId="_vYeNACIKEfCaZY4EQg-M0A"/>
+    <position xmi:id="_vYeNAyIKEfCaZY4EQg-M0A" x="421.0" y="141.8333339691162"/>
+    <size xmi:id="_vYeNBCIKEfCaZY4EQg-M0A" width="60.0" height="45.0"/>
+  </elements>
+  <elements xsi:type="notation:Shape" xmi:id="_v1XkYSIKEfCaZY4EQg-M0A">
+    <semanticElement xmi:id="_v1XkYiIKEfCaZY4EQg-M0A" elementId="_v1XkYCIKEfCaZY4EQg-M0A"/>
+    <position xmi:id="_3FcfwCIKEfCaZY4EQg-M0A" x="91.0" y="29.83333396911621"/>
+    <size xmi:id="_3FcfwSIKEfCaZY4EQg-M0A" width="280.0" height="184.0"/>
+  </elements>
+  <elements xsi:type="notation:Shape" xmi:id="_wIVjsSIKEfCaZY4EQg-M0A">
+    <semanticElement xmi:id="_wIVjsiIKEfCaZY4EQg-M0A" elementId="_wIVjsCIKEfCaZY4EQg-M0A"/>
+    <position xmi:id="_3WtO4CIKEfCaZY4EQg-M0A" x="20.0" y="3.0"/>
+    <size xmi:id="_3WtO4SIKEfCaZY4EQg-M0A" width="258.0" height="156.8333339691162"/>
+  </elements>
+  <elements xsi:type="notation:Shape" xmi:id="_xZQZACIKEfCaZY4EQg-M0A">
+    <semanticElement xmi:id="_xZQZASIKEfCaZY4EQg-M0A" elementId="_xZPx8CIKEfCaZY4EQg-M0A"/>
+    <position xmi:id="_x5Z4sCIKEfCaZY4EQg-M0A" x="30.0" y="15.666667938232422"/>
+    <size xmi:id="_x5Z4sSIKEfCaZY4EQg-M0A" width="64.0590591430664" height="45.0"/>
+  </elements>
+  <elements xsi:type="notation:Shape" xmi:id="_xsGcgSIKEfCaZY4EQg-M0A">
+    <semanticElement xmi:id="_xsGcgiIKEfCaZY4EQg-M0A" elementId="_xsGcgCIKEfCaZY4EQg-M0A"/>
+    <position xmi:id="_3oWYgCIKEfCaZY4EQg-M0A" x="121.0" y="73.66666793823242"/>
+    <size xmi:id="_3oWYgSIKEfCaZY4EQg-M0A" width="64.0590591430664" height="45.0"/>
+  </elements>
+  <elements xsi:type="notation:Edge" xmi:id="_y3JTUSIKEfCaZY4EQg-M0A">
+    <semanticElement xmi:id="_y3JTUiIKEfCaZY4EQg-M0A" elementId="_y3JTUCIKEfCaZY4EQg-M0A"/>
+  </elements>
+  <elements xsi:type="notation:Edge" xmi:id="_zZmgISIKEfCaZY4EQg-M0A">
+    <semanticElement xmi:id="_zZmgIiIKEfCaZY4EQg-M0A" elementId="_zZmgICIKEfCaZY4EQg-M0A"/>
+  </elements>
+  <elements xsi:type="notation:Shape" xmi:id="_1QUKISIKEfCaZY4EQg-M0A">
+    <semanticElement xmi:id="_1QUKIiIKEfCaZY4EQg-M0A" elementId="_1QUKICIKEfCaZY4EQg-M0A"/>
+    <position xmi:id="_4GOAQCIKEfCaZY4EQg-M0A" x="189.0"/>
+    <size xmi:id="_4GOAQSIKEfCaZY4EQg-M0A" width="60.0" height="45.0"/>
+  </elements>
+  <elements xsi:type="notation:Edge" xmi:id="_1115ESIKEfCaZY4EQg-M0A">
+    <semanticElement xmi:id="_1115EiIKEfCaZY4EQg-M0A" elementId="_1115ECIKEfCaZY4EQg-M0A"/>
+  </elements>
+  <elements xsi:type="notation:Shape" xmi:id="_N569ISILEfCaZY4EQg-M0A">
+    <semanticElement xmi:id="_N569IiILEfCaZY4EQg-M0A" elementId="_N569ICILEfCaZY4EQg-M0A"/>
+    <position xmi:id="_OGPh4CILEfCaZY4EQg-M0A" x="146.0" y="246.8333339691162"/>
+    <size xmi:id="_OGPh4SILEfCaZY4EQg-M0A" width="60.0" height="45.0"/>
+  </elements>
+  <elements xsi:type="notation:Edge" xmi:id="_OfQe0SILEfCaZY4EQg-M0A">
+    <semanticElement xmi:id="_OfQe0iILEfCaZY4EQg-M0A" elementId="_OfQe0CILEfCaZY4EQg-M0A"/>
+  </elements>
+</unotation:UMLDiagram>

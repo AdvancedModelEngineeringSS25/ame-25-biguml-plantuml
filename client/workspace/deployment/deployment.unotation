@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="ASCII"?>
+<unotation:UMLDiagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:notation="http://www.eclipse.org/glsp/notation" xmlns:unotation="http://www.borkdominik.com/big-glsp/uml/unotation" xmi:id="_uPeokCKiEfC-j5SEH_SoWg" diagramType="DEPLOYMENT">
+  <semanticElement xmi:id="_uQFskCKiEfC-j5SEH_SoWg" elementId="_uP4RMCKiEfC-j5SEH_SoWg"/>
+  <elements xsi:type="notation:Shape" xmi:id="_4H9CMCKlEfC-j5SEH_SoWg">
+    <semanticElement xmi:id="_4H9CMSKlEfC-j5SEH_SoWg" elementId="_4H8bICKlEfC-j5SEH_SoWg"/>
+    <position xmi:id="_4H9CMiKlEfC-j5SEH_SoWg" x="588.0" y="247.0"/>
+    <size xmi:id="_4H9CMyKlEfC-j5SEH_SoWg" width="60.0" height="45.0"/>
+  </elements>
+  <elements xsi:type="notation:Shape" xmi:id="_4YVAgSKlEfC-j5SEH_SoWg">
+    <semanticElement xmi:id="_4YVAgiKlEfC-j5SEH_SoWg" elementId="_4YVAgCKlEfC-j5SEH_SoWg"/>
+    <position xmi:id="_4YVAgyKlEfC-j5SEH_SoWg" x="553.0" y="430.0"/>
+    <size xmi:id="_4YVAhCKlEfC-j5SEH_SoWg" width="60.0" height="45.0"/>
+  </elements>
+  <elements xsi:type="notation:Shape" xmi:id="_4jUvkSKlEfC-j5SEH_SoWg">
+    <semanticElement xmi:id="_4jUvkiKlEfC-j5SEH_SoWg" elementId="_4jUvkCKlEfC-j5SEH_SoWg"/>
+    <position xmi:id="_4jUvkyKlEfC-j5SEH_SoWg" x="756.0" y="449.0"/>
+    <size xmi:id="_4jUvlCKlEfC-j5SEH_SoWg" width="60.0" height="45.0"/>
+  </elements>
+  <elements xsi:type="notation:Shape" xmi:id="_4t1WcSKlEfC-j5SEH_SoWg">
+    <semanticElement xmi:id="_4t1WciKlEfC-j5SEH_SoWg" elementId="_4t1WcCKlEfC-j5SEH_SoWg"/>
+    <position xmi:id="_4t1WcyKlEfC-j5SEH_SoWg" x="439.0" y="423.0"/>
+    <size xmi:id="_4t1WdCKlEfC-j5SEH_SoWg" width="60.0" height="45.0"/>
+  </elements>
+  <elements xsi:type="notation:Edge" xmi:id="_6CL6QCKlEfC-j5SEH_SoWg">
+    <semanticElement xmi:id="_6CL6QSKlEfC-j5SEH_SoWg" elementId="_6CLTMCKlEfC-j5SEH_SoWg"/>
+  </elements>
+  <elements xsi:type="notation:Edge" xmi:id="_6uPH8SKlEfC-j5SEH_SoWg">
+    <semanticElement xmi:id="_6uPH8iKlEfC-j5SEH_SoWg" elementId="_6uPH8CKlEfC-j5SEH_SoWg"/>
+  </elements>
+  <elements xsi:type="notation:Edge" xmi:id="_7dzjsCKlEfC-j5SEH_SoWg">
+    <semanticElement xmi:id="_7dzjsSKlEfC-j5SEH_SoWg" elementId="_7dy8oCKlEfC-j5SEH_SoWg"/>
+  </elements>
+  <elements xsi:type="notation:Shape" xmi:id="_8GG50SKlEfC-j5SEH_SoWg">
+    <semanticElement xmi:id="_8GG50iKlEfC-j5SEH_SoWg" elementId="_8GG50CKlEfC-j5SEH_SoWg"/>
+    <position xmi:id="_8bQqcCKlEfC-j5SEH_SoWg" x="344.0" y="171.0"/>
+    <size xmi:id="_8bQqcSKlEfC-j5SEH_SoWg" width="102.83332824707031" height="45.33333206176758"/>
+  </elements>
+  <elements xsi:type="notation:Shape" xmi:id="_8TP98CKlEfC-j5SEH_SoWg">
+    <semanticElement xmi:id="_8TP98SKlEfC-j5SEH_SoWg" elementId="_8TPW4CKlEfC-j5SEH_SoWg"/>
+    <position xmi:id="_8TP98iKlEfC-j5SEH_SoWg" x="249.0" y="274.0"/>
+    <size xmi:id="_8TP98yKlEfC-j5SEH_SoWg" width="60.0" height="45.0"/>
+  </elements>
+  <elements xsi:type="notation:Edge" xmi:id="_80NV8SKlEfC-j5SEH_SoWg">
+    <semanticElement xmi:id="_80NV8iKlEfC-j5SEH_SoWg" elementId="_80NV8CKlEfC-j5SEH_SoWg"/>
+  </elements>
+  <elements xsi:type="notation:Edge" xmi:id="_9WHJICKlEfC-j5SEH_SoWg">
+    <semanticElement xmi:id="_9WHJISKlEfC-j5SEH_SoWg" elementId="_9WGiECKlEfC-j5SEH_SoWg"/>
+  </elements>
+</unotation:UMLDiagram>
