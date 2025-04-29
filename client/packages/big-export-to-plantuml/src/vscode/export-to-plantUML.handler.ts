@@ -90,18 +90,11 @@ export class ExportToPlantUMLActionHandler implements Disposable {
                     await this.logInfo('Retrieved source model successfully');
 
                     try {
-                        if (!sourceModel.packagedElement) {
-                            return ExportToPlantUMLActionResponse.create({
-                                success: false,
-                                message: 'No package elements found in the model'
-                            });
-                        }
-
                         // Detect diagram type from the model
-                        const diagramType = sourceModel.packagedElement[0].eClass.split('#//')[1];
+                        const diagramType = getDiagramType(model);
                         await this.logInfo(`Detected diagram type: ${diagramType}`);
                         console.log('source model stringified: ', JSON.stringify(sourceModel, null, 2));
-                        console.log('source model: ', sourceModel.packagedElement[0].eClass.split('#//')[1]);
+
                         const parser = PlantUMLParserFactory.getParser(diagramType);
                         const plantUmlContent = parser.parse(sourceModel);
 
@@ -115,7 +108,7 @@ export class ExportToPlantUMLActionHandler implements Disposable {
                             message: successMessage
                         });
                     } catch (error) {
-                        const errorMessage = `Failed to save model: ${error instanceof Error ? error.message : String(error)}`;
+                        const errorMessage = `${error instanceof Error ? error.message : String(error)}`;
                         await this.logError(errorMessage);
                         vscode.window.showErrorMessage(`Failed to save model: ${errorMessage}`);
                         return ExportToPlantUMLActionResponse.create({
@@ -126,7 +119,7 @@ export class ExportToPlantUMLActionHandler implements Disposable {
                 } catch (error) {
                     const errorMessage = `Unexpected error during export: ${error instanceof Error ? error.message : String(error)}`;
                     await this.logError(errorMessage);
-                    vscode.window.showErrorMessage(`Failed to save model: ${errorMessage}`);
+                    vscode.window.showErrorMessage(`${errorMessage}`);
                     return ExportToPlantUMLActionResponse.create({
                         success: false,
                         message: errorMessage
@@ -170,4 +163,24 @@ export class ExportToPlantUMLActionHandler implements Disposable {
     dispose(): void {
         this.toDispose.dispose();
     }
+}
+
+// Function to extract the diagram type from the model
+function getDiagramType(model: any): string {
+    for (const resource of model.resources) {
+        if (resource.format === 'json') {
+            try {
+                const parsedContent = JSON.parse(resource.content);
+
+                if (parsedContent.eClass.includes('UMLDiagram')) {
+                    return parsedContent.diagramType;
+                }
+            } catch (e) {
+                console.error(`Failed to parse resource content: ${e}`);
+            }
+        }
+    }
+
+    // If no diagramType is found
+    return 'undefined';
 }

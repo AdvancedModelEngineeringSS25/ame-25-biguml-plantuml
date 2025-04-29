@@ -29,7 +29,7 @@ export class PlantUMLParserFactory {
                 return new ClassDiagramParser();
             case 'activity':
                 return new ActivityDiagramParser();
-            case 'statemachine':
+            case 'state_machine':
                 return new StateMachineDiagramParser();
             case 'deployment':
                 return new DeploymentDiagramParser();
