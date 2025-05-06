@@ -35,7 +35,7 @@ To setup this project we need to first clone both repositories given
     bigGLSP:https://github.com/AdvancedModelEngineeringSS25/ame-25-bigglsp-plantuml
     bigUML:https://github.com/AdvancedModelEngineeringSS25/ame-25-biguml-plantuml/tree/main
 
-Then in the bigGLSP repo, go into /plugins/bigGLSP-server-java/ and use ./gradlew build to run the integrated gradlewrapper and to build the GLSP project.
+Then in the bigGLSP repo, go into /plugins/bigGLSP-server-java/ and use ./gradlew prepare to run the integrated gradlewrapper and to build the GLSP project.
 
 Afterwards, in the bigUML repository, go into /server/ and use ./gradlew clean build and afterwards ./gradlew run to start the server
 
