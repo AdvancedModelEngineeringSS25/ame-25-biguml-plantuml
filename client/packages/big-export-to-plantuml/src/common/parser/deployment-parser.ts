@@ -76,7 +76,14 @@ export class DeploymentDiagramParser implements DiagramParser {
 
             // Handle dependencies
             if (element.eClass.includes('Dependency')) {
-                this.parseDependency(element);
+                if (element.client && element.client.length > 0 && element.supplier && element.supplier.length > 0) {
+                    this.relationships.push({
+                        source: element.client[0].$ref,
+                        target: element.supplier[0].$ref,
+                        type: 'dependency',
+                        name: element.name
+                    });
+                }
             }
 
             // Handle generalizations
@@ -92,14 +99,29 @@ export class DeploymentDiagramParser implements DiagramParser {
                 });
             }
 
+            // Handle manifestations
+            if (element.manifestation) {
+                element.manifestation.forEach((man: any) => {
+                    if (man.supplier && man.supplier[0].$ref) {
+                        this.relationships.push({
+                            source: element.id,
+                            target: man.supplier[0].$ref,
+                            type: 'manifestation',
+                            name: '<<manifest>>'
+                        });
+                    }
+                });
+            }
+
             // Handle artifacts deployed on nodes
             if (element.deployment) {
                 element.deployment.forEach((deployment: any) => {
                     if (deployment.supplier && deployment.supplier.length > 0) {
                         this.relationships.push({
-                            source: element.id,
-                            target: deployment.supplier[0].$ref,
-                            type: 'deployment'
+                            source: deployment.supplier[0].$ref,
+                            target: element.id,
+                            type: 'deployment',
+                            name: '<<deploy>>'
                         });
                     }
                 });
@@ -132,20 +154,9 @@ export class DeploymentDiagramParser implements DiagramParser {
                     source: source.id,
                     target: target.id,
                     type: 'communication',
-                    name: path.name
+                    name: 'CommunicationPath'
                 });
             }
-        }
-    }
-
-    private parseDependency(dependency: any): void {
-        if (dependency.client && dependency.client.length > 0 && dependency.supplier && dependency.supplier.length > 0) {
-            this.relationships.push({
-                source: dependency.client[0].$ref,
-                target: dependency.supplier[0].$ref,
-                type: 'dependency',
-                name: dependency.name
-            });
         }
     }
 
@@ -168,6 +179,8 @@ export class DeploymentDiagramParser implements DiagramParser {
             return 'package';
         } else if (eClass.includes('interface')) {
             return 'interface';
+        } else if (eClass.includes('communicationpath')) {
+            return '';
         } else {
             return 'node'; // Default to node for unknown types
         }
@@ -181,8 +194,10 @@ export class DeploymentDiagramParser implements DiagramParser {
                 return '..>';
             case 'generalization':
                 return '--|>';
+            case 'manifestation':
+                return '..>';
             case 'deployment':
-                return '->>>';
+                return '..>';
             default:
                 return '--';
         }
@@ -196,6 +211,7 @@ export class DeploymentDiagramParser implements DiagramParser {
             if (!element.name) continue;
 
             const elementType = this.getElementType(element);
+            if (!elementType) continue;
             lines.push(`${elementType} "${element.name}"`);
         }
 
