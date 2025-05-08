@@ -82,6 +82,12 @@
         "enablement": "activeCustomEditorId == 'bigUML.diagramView'"
       },
       {
+        "command": "bigUML.importFromPlantUML",
+        "title": "Import from PlantUML",
+        "category": "bigUML",
+        "enablement": "activeCustomEditorId == 'bigUML.diagramView'"
+      },
+      {
         "command": "bigUML.fit",
         "title": "Fit to Screen",
         "category": "bigUML",
@@ -296,6 +302,7 @@
   "dependencies": {
     "@borkdominik-biguml/big-hello-world": "*",
     "@borkdominik-biguml/big-export-to-plantuml": "*",
+    "@borkdominik-biguml/big-import-from-plantuml": "*",
     "@borkdominik-biguml/big-minimap": "*",
     "@borkdominik-biguml/big-outline": "*",
     "@borkdominik-biguml/big-property-palette": "*",
