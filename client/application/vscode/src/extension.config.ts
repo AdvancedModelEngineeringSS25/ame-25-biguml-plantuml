@@ -6,8 +6,9 @@
  *
  * SPDX-License-Identifier: MIT
  *********************************************************************************/
-import { helloWorldModule } from '@borkdominik-biguml/big-hello-world/vscode';
 import { ExportToPlantUMLModule } from '@borkdominik-biguml/big-export-to-plantuml/vscode';
+import { helloWorldModule } from '@borkdominik-biguml/big-hello-world/vscode';
+import { ImportFromPlantUMLModule } from '@borkdominik-biguml/big-import-from-plantuml/vscode';
 import { minimapModule } from '@borkdominik-biguml/big-minimap/vscode';
 import { outlineModule } from '@borkdominik-biguml/big-outline/vscode';
 import { propertyPaletteModule } from '@borkdominik-biguml/big-property-palette/vscode';
@@ -44,6 +45,7 @@ export function createContainer(
         minimapModule(VSCodeSettings.minimap.viewId),
         helloWorldModule(VSCodeSettings.helloWorld.viewId),
         ExportToPlantUMLModule(VSCodeSettings.exportToPlantUML.viewId),
+        ImportFromPlantUMLModule(VSCodeSettings.importFromPlantUML.viewId),
         themeModule
     );
 

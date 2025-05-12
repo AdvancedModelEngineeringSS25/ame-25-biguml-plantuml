@@ -9,6 +9,7 @@
 
 import { exportToPlantUMLModule } from '@borkdominik-biguml/big-export-to-plantuml/glsp-client';
 import { helloWorldModule } from '@borkdominik-biguml/big-hello-world/glsp-client';
+import { importFromPlantUMLModule } from '@borkdominik-biguml/big-import-from-plantuml/glsp-client';
 import { minimapModule } from '@borkdominik-biguml/big-minimap/glsp-client';
 import { outlineModule } from '@borkdominik-biguml/big-outline/glsp-client';
 import { propertyPaletteModule } from '@borkdominik-biguml/big-property-palette/glsp-client';
@@ -44,7 +45,8 @@ class UMLStarter extends GLSPStarter {
             minimapModule,
             propertyPaletteModule,
             helloWorldModule,
-            exportToPlantUMLModule
+            exportToPlantUMLModule,
+            importFromPlantUMLModule
         );
 
         return container;

@@ -46,4 +46,7 @@ export const VSCodeSettings = {
     exportToPlantUML: {
         viewId: 'bigUML.panel.export-to-plantuml'
     },
+    importFromPlantUML: {
+        viewId: 'bigUML.panel.import-from-plantuml'
+    }
 } as const;
