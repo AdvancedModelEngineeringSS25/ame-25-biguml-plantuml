@@ -23,6 +23,7 @@ import * as vscode from 'vscode';
 import { ImportFromPlantUMLActionResponse, RequestImportFromPlantUMLAction } from '../common/import-from-plantUML.action.js';
 //import { PlantUMLParserFactory } from '../common/plantuml-parser.js';
 import { parse, formatters, type UML } from 'plantuml-parser';
+import { PlantUMLParser } from '../common/plantuml-parser.js';
 
 @injectable()
 export class ImportFromPlantUMLActionHandler implements Disposable {
@@ -119,7 +120,9 @@ export class ImportFromPlantUMLActionHandler implements Disposable {
                         // Parse plantUML to JSON
                         const plantUmlContent = await this.parsePlantUML(fileUri)
                         // await this.logInfo(plantUmlContent)
-                        console.log(plantUmlContent)
+                        const annotatedPlantUmlContent = await PlantUMLParser.parse(selection!.description, plantUmlContent)
+
+                        console.log(annotatedPlantUmlContent)
                         // Use JSON to init 
                         //const parser = PlantUMLParserFactory.getParser(selection.description);
                         
