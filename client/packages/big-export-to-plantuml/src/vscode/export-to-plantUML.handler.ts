@@ -94,6 +94,8 @@ export class ExportToPlantUMLActionHandler implements Disposable {
                         const diagramType = getDiagramType(model);
                         await this.logInfo(`Detected diagram type: ${diagramType}`);
 
+                        console.log('model', JSON.stringify(sourceModel, null, 2));
+
                         const parser = PlantUMLParserFactory.getParser(diagramType);
                         const plantUmlContent = parser.parse(sourceModel);
 

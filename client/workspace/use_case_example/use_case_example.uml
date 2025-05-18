@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="ASCII"?>
+<uml:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_XF99QDPjEfCZRIS1phpGgw">
+  <packagedElement xsi:type="uml:Actor" xmi:id="_qfdksDPnEfCZRIS1phpGgw" name="Tour Guide">
+    <generalization xmi:id="_vvR4gDPnEfCZRIS1phpGgw" general="_r6q-cDPnEfCZRIS1phpGgw"/>
+  </packagedElement>
+  <packagedElement xsi:type="uml:Actor" xmi:id="_r6q-cDPnEfCZRIS1phpGgw" name="Passenger"/>
+  <packagedElement xsi:type="uml:Component" xmi:id="_FaBtsDPoEfCZRIS1phpGgw" name="Airport">
+    <ownedUseCase xmi:id="_JMeEkDPoEfCZRIS1phpGgw" name="Group Check-In">
+      <include xmi:id="_X5aaIDPoEfCZRIS1phpGgw" addition="_LVp-oDPoEfCZRIS1phpGgw"/>
+    </ownedUseCase>
+    <ownedUseCase xmi:id="_LVp-oDPoEfCZRIS1phpGgw" name="Individual Check-In"/>
+    <ownedUseCase xmi:id="_OiV9EDPoEfCZRIS1phpGgw" name="Baggage Check-In">
+      <extend xmi:id="_WKG_sDPoEfCZRIS1phpGgw" extendedCase="_LVp-oDPoEfCZRIS1phpGgw"/>
+    </ownedUseCase>
+    <ownedUseCase xmi:id="_SDKYcDPoEfCZRIS1phpGgw" name="Security Screening"/>
+  </packagedElement>
+  <packagedElement xsi:type="uml:Association" xmi:id="_ZJVw8DPoEfCZRIS1phpGgw" memberEnd="_ZJVw8TPoEfCZRIS1phpGgw _ZJVw9DPoEfCZRIS1phpGgw" navigableOwnedEnd="_ZJVw8TPoEfCZRIS1phpGgw _ZJVw9DPoEfCZRIS1phpGgw">
+    <ownedEnd xmi:id="_ZJVw8TPoEfCZRIS1phpGgw" name="Group Check-In" type="_JMeEkDPoEfCZRIS1phpGgw" association="_ZJVw8DPoEfCZRIS1phpGgw">
+      <lowerValue xsi:type="uml:LiteralInteger" xmi:id="_ZJVw8jPoEfCZRIS1phpGgw" value="1"/>
+      <upperValue xsi:type="uml:LiteralUnlimitedNatural" xmi:id="_ZJVw8zPoEfCZRIS1phpGgw" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_ZJVw9DPoEfCZRIS1phpGgw" name="Tour Guide" type="_qfdksDPnEfCZRIS1phpGgw" association="_ZJVw8DPoEfCZRIS1phpGgw">
+      <lowerValue xsi:type="uml:LiteralInteger" xmi:id="_ZJVw9TPoEfCZRIS1phpGgw" value="1"/>
+      <upperValue xsi:type="uml:LiteralUnlimitedNatural" xmi:id="_ZJVw9jPoEfCZRIS1phpGgw" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="uml:Association" xmi:id="_aZ9EQDPoEfCZRIS1phpGgw" memberEnd="_aZ9EQTPoEfCZRIS1phpGgw _aZ9ERDPoEfCZRIS1phpGgw" navigableOwnedEnd="_aZ9EQTPoEfCZRIS1phpGgw _aZ9ERDPoEfCZRIS1phpGgw">
+    <ownedEnd xmi:id="_aZ9EQTPoEfCZRIS1phpGgw" name="Individual Check-In" type="_LVp-oDPoEfCZRIS1phpGgw" association="_aZ9EQDPoEfCZRIS1phpGgw">
+      <lowerValue xsi:type="uml:LiteralInteger" xmi:id="_aZ9EQjPoEfCZRIS1phpGgw" value="1"/>
+      <upperValue xsi:type="uml:LiteralUnlimitedNatural" xmi:id="_aZ9EQzPoEfCZRIS1phpGgw" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_aZ9ERDPoEfCZRIS1phpGgw" name="Passenger" type="_r6q-cDPnEfCZRIS1phpGgw" association="_aZ9EQDPoEfCZRIS1phpGgw">
+      <lowerValue xsi:type="uml:LiteralInteger" xmi:id="_aZ9ERTPoEfCZRIS1phpGgw" value="1"/>
+      <upperValue xsi:type="uml:LiteralUnlimitedNatural" xmi:id="_aZ9ERjPoEfCZRIS1phpGgw" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="uml:Association" xmi:id="_a9--YDPoEfCZRIS1phpGgw" name="" visibility="public" memberEnd="_a9--YTPoEfCZRIS1phpGgw _a9--ZDPoEfCZRIS1phpGgw" navigableOwnedEnd="_a9--YTPoEfCZRIS1phpGgw _a9--ZDPoEfCZRIS1phpGgw">
+    <ownedEnd xmi:id="_a9--YTPoEfCZRIS1phpGgw" name="Security Screening" type="_SDKYcDPoEfCZRIS1phpGgw" association="_a9--YDPoEfCZRIS1phpGgw">
+      <lowerValue xsi:type="uml:LiteralInteger" xmi:id="_a9--YjPoEfCZRIS1phpGgw" value="1"/>
+      <upperValue xsi:type="uml:LiteralUnlimitedNatural" xmi:id="_a9--YzPoEfCZRIS1phpGgw" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_a9--ZDPoEfCZRIS1phpGgw" name="Passenger" type="_r6q-cDPnEfCZRIS1phpGgw" association="_a9--YDPoEfCZRIS1phpGgw">
+      <lowerValue xsi:type="uml:LiteralInteger" xmi:id="_a9--ZTPoEfCZRIS1phpGgw" value="1"/>
+      <upperValue xsi:type="uml:LiteralUnlimitedNatural" xmi:id="_a9--ZjPoEfCZRIS1phpGgw" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+</uml:Model>

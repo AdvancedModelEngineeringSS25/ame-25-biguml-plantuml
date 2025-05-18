@@ -11,6 +11,7 @@ import { ActivityDiagramParser } from './parser/activity-parser.js';
 import { ClassDiagramParser } from './parser/class-parser.js';
 import { DeploymentDiagramParser } from './parser/deployment-parser.js';
 import { StateMachineDiagramParser } from './parser/state-machine-parser.js';
+import { UseCaseDiagramParser } from './parser/use-case-parser.js';
 
 /**
  * Base interface for different diagram parsers
@@ -33,6 +34,8 @@ export class PlantUMLParserFactory {
                 return new StateMachineDiagramParser();
             case 'deployment':
                 return new DeploymentDiagramParser();
+            case 'use_case':
+                return new UseCaseDiagramParser();
             default:
                 throw new Error(`Unsupported diagram type: ${diagramType}`);
         }
