@@ -122,7 +122,7 @@ export class ImportFromPlantUMLActionHandler implements Disposable {
                         // await this.logInfo(plantUmlContent)
                         const annotatedPlantUmlContent = await PlantUMLParser.parse(selection!.description, plantUmlContent)
 
-                        console.log(annotatedPlantUmlContent)
+                        console.log(JSON.stringify(annotatedPlantUmlContent, null, 2));
                         // Use JSON to init 
                         //const parser = PlantUMLParserFactory.getParser(selection.description);
                         

@@ -22,38 +22,41 @@ export type PlantUmlElement = {
     rightArrowHead?: string;
     leftArrowBody?: string;
     rightArrowBody?: string;
+    label?: string;
     text?: string;
     of?: string;
-    [key: string]: any; // For extra properties
-  }
-  
-export class ComponentDiagramParser {
+    stereotypes?: string[];
+    [key: string]: any;
+};
 
+export class UseCaseDiagramParser {
     parse(model: UML[]): PlantUmlElement[] {
-        let elements : PlantUmlElement[] = [];
+        let elements: PlantUmlElement[] = [];
         model.forEach(obj => {
             if (Array.isArray(obj.elements)) {
-              elements = obj.elements;
+                elements = obj.elements;
             }
-          });
-        return this.parseElements(elements)
+        });
+        return this.parseElements(elements);
     }
+
     parseElements(elements: PlantUmlElement[]): PlantUmlElement[] {
         elements.forEach(element => {
             if ('type' in element) {
-                // type already given in this element
-                if(element.elements !== undefined && element.elements?.length > 0){
+                // Already typed (e.g. package, actor, usecase)
+                if (element.elements !== undefined && element.elements.length > 0) {
                     element.elements = this.parseElements(element.elements);
                 }
-            } else if ('left' in element) {
-                // relationships are identified using their arrows
-            } else if ("text" in element && "of" in element){
+            } else if ('left' in element && 'right' in element) {
+                // Relationships identified using arrows
+            } else if ('text' in element && 'of' in element) {
                 element.type = "note";
-            } else if ("name" in element && !("type" in element)) {
-                element.type = "component";
-            }else {
+            } else if (element.name && !('type' in element)) {
+                element.type = "usecase";
+            } else {
                 element.type = "unknown";
             }
+            // ! actors are currently not recognized by the parser module
         });
         return elements;
     }
