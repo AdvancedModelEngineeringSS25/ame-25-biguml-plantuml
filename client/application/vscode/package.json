@@ -84,8 +84,7 @@
       {
         "command": "bigUML.importFromPlantUML",
         "title": "Import from PlantUML",
-        "category": "bigUML",
-        "enablement": "activeCustomEditorId == 'bigUML.diagramView'"
+        "category": "bigUML"
       },
       {
         "command": "bigUML.fit",
