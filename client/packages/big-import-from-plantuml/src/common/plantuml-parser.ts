@@ -7,7 +7,8 @@
  * SPDX-License-Identifier: MIT
  **********************************************************************************/
 
-import { ClassDiagramParser } from './parser/class-parser.js';
+import type { UML } from 'plantuml-parser';
+import { ClassDiagramParser, type PlantUmlElement } from './parser/class-parser.js';
 import { ComponentDiagramParser } from './parser/component-parser.js';
 import { UseCaseDiagramParser } from './parser/use-case-parser.js';
 
@@ -15,7 +16,7 @@ import { UseCaseDiagramParser } from './parser/use-case-parser.js';
  * Factory for creating diagram parsers based on diagram type
  */
 export class PlantUMLParser {
-    static parse(diagramType: string, model: any[]): any[] {
+    static parse(diagramType: string, model: UML[]): PlantUmlElement[] {
         switch (diagramType.toLowerCase()) {
             case 'component': {
                 const componentparser = new ComponentDiagramParser();

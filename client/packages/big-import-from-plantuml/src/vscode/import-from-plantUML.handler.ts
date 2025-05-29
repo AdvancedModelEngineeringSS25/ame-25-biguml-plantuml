@@ -15,14 +15,22 @@ import {
     type Disposable,
     type ExperimentalGLSPServerModelState
 } from '@borkdominik-biguml/big-vscode-integration/vscode';
-import { DisposableCollection } from '@eclipse-glsp/protocol';
+import { CreateNodeOperation, DisposableCollection } from '@eclipse-glsp/protocol';
 import * as fs from 'fs';
 import { inject, injectable, postConstruct } from 'inversify';
 import * as path from 'path';
 import * as vscode from 'vscode';
 import { ImportFromPlantUMLActionResponse, RequestImportFromPlantUMLAction } from '../common/import-from-plantUML.action.js';
 //import { PlantUMLParserFactory } from '../common/plantuml-parser.js';
-import { parse, formatters, type UML } from 'plantuml-parser';
+import {
+    BatchCreateOperation,
+    UpdateElementPropertyAction,
+    type BatchOperation,
+    type TempCreationId
+} from '@borkdominik-biguml/uml-protocol';
+import { formatters, parse, type Member, type MemberVariable, type Method, type UML } from 'plantuml-parser';
+import { v4 } from 'uuid';
+import type { PlantUmlElement } from '../common/parser/class-parser.js';
 import { PlantUMLParser } from '../common/plantuml-parser.js';
 
 @injectable()
@@ -77,7 +85,6 @@ export class ImportFromPlantUMLActionHandler implements Disposable {
         this.toDispose.push(
             this.actionListener.handleVSCodeRequest(RequestImportFromPlantUMLAction.KIND, async () => {
                 try {
-
                     // INITIALIZATION
 
                     await this.logInfo('Starting PlantUML import');
@@ -95,7 +102,6 @@ export class ImportFromPlantUMLActionHandler implements Disposable {
                         matchOnDescription: true
                     });
 
-
                     await this.logInfo(`Selected diagram type: ${selection!.description}`);
 
                     // User chooses 1 plantuml file to parse
@@ -107,25 +113,26 @@ export class ImportFromPlantUMLActionHandler implements Disposable {
                             'All Files': ['*']
                         }
                     });
-                
+
                     if (!fileUris || fileUris.length === 0) {
                         vscode.window.showWarningMessage('No file selected.');
                     }
-                
+
                     const fileUri = fileUris![0];
 
                     //PARSING
-                
+
                     try {
                         // Parse plantUML to JSON
-                        const plantUmlContent = await this.parsePlantUML(fileUri)
+                        const plantUmlContent = await this.parsePlantUML(fileUri);
                         // await this.logInfo(plantUmlContent)
-                        const annotatedPlantUmlContent = await PlantUMLParser.parse(selection!.description, plantUmlContent)
+                        const annotatedPlantUmlContent = await PlantUMLParser.parse(selection!.description, plantUmlContent);
 
                         console.log(JSON.stringify(annotatedPlantUmlContent, null, 2));
-                        // Use JSON to init 
+                        this.importGLSP(annotatedPlantUmlContent);
+                        // Use JSON to init
                         //const parser = PlantUMLParserFactory.getParser(selection.description);
-                        
+
                         // Trigger Functions to create Elements
                         // parser.execute(plantUMLContent)
 
@@ -156,6 +163,108 @@ export class ImportFromPlantUMLActionHandler implements Disposable {
                 }
             })
         );
+    }
+
+    importGLSP(elements: PlantUmlElement[]): void {
+        const operations: BatchOperation[] = [];
+
+        function handleClass(element: PlantUmlElement, isAbstract?: boolean, containerId?: string): BatchOperation {
+            const tempId: TempCreationId = `temp_${v4()}`;
+
+            const createOperation = CreateNodeOperation.create(`CLASS__${isAbstract ? 'AbstractClass' : 'Class'}`, { containerId });
+            const updateActions: UpdateElementPropertyAction[] = [];
+
+            if (element.name) {
+                updateActions.push(
+                    UpdateElementPropertyAction.create({
+                        elementId: tempId,
+                        propertyId: 'name',
+                        value: element.name
+                    })
+                );
+            }
+
+            return {
+                tempCreationId: tempId,
+                createOperation,
+                updateActions
+            };
+        }
+
+        function handleProperty(containerId: string, property: MemberVariable): BatchOperation {
+            const tempId: TempCreationId = `temp_${v4()}`;
+
+            const createOperation = CreateNodeOperation.create(`CLASS__Property`, { containerId });
+            const updateActions: UpdateElementPropertyAction[] = [];
+
+            if (property.name) {
+                updateActions.push(
+                    UpdateElementPropertyAction.create({
+                        elementId: tempId,
+                        propertyId: 'name',
+                        value: property.name
+                    })
+                );
+            }
+
+            return {
+                tempCreationId: tempId,
+                createOperation,
+                updateActions
+            };
+        }
+
+        function handleOperation(containerId: string, operation: Method): BatchOperation {
+            const tempId: TempCreationId = `temp_${v4()}`;
+
+            const createOperation = CreateNodeOperation.create(`CLASS__Operation`, { containerId });
+            const updateActions: UpdateElementPropertyAction[] = [];
+
+            if (operation.name) {
+                updateActions.push(
+                    UpdateElementPropertyAction.create({
+                        elementId: tempId,
+                        propertyId: 'name',
+                        value: operation.name
+                    })
+                );
+            }
+
+            return {
+                tempCreationId: tempId,
+                createOperation,
+                updateActions
+            };
+        }
+
+        for (const element of elements) {
+            let operation: BatchOperation | undefined = undefined;
+            if (element.type === 'class') {
+                operation = handleClass(element);
+            } else if (element.type === 'abstract class') {
+                operation = handleClass(element, true);
+            }
+
+            if (!operation) {
+                continue;
+            }
+
+            operations.push(operation);
+
+            if (!operation.tempCreationId) {
+                continue;
+            }
+
+            for (const member of element.members as Member[]) {
+                if ('returnType' in member) {
+                    operations.push(handleOperation(operation.tempCreationId, member));
+                } else {
+                    operations.push(handleProperty(operation.tempCreationId, member));
+                }
+            }
+        }
+
+        this.actionDispatcher.dispatch(BatchCreateOperation.create(operations));
     }
 
     /**
@@ -193,8 +302,8 @@ export class ImportFromPlantUMLActionHandler implements Disposable {
      * Parse Input file of plantUML to JSON
      */
     private async parsePlantUML(inputFile: vscode.Uri): Promise<UML[]> {
-        try{
-            const data = await this.readFileContents(inputFile)
+        try {
+            const data = await this.readFileContents(inputFile);
             const result = parse(data);
             await this.logInfo(formatters.default(result));
             return result;

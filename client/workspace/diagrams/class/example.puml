@@ -1,0 +1,32 @@
+@startuml
+
+abstract        abstract
+abstract class  "abstract class"
+annotation      annotation
+circle          circle
+()              circle_short_form
+class           class
+class           class_stereo  <<stereotype>>
+diamond         diamond
+<>              diamond_short_form
+entity          entity
+enum            enum
+exception       exception
+interface       interface
+metaclass       metaclass
+protocol        protocol
+stereotype      stereotype
+struct          struct
+class Dummy {
+ -field1
+ #field2
+ ~method1()
+ +method2()
+}
+
+Class01 <|-- Class02
+Class03 *-- Class04
+Class05 o-- Class06
+Class07 .. Class08
+Class09 -- Class10
+@enduml
