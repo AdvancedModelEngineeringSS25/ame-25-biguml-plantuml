@@ -1,0 +1,31 @@
+@startuml
+
+interface IExample {
+    +void exampleMethod()
+}
+
+enum Color {
+    RED
+    GREEN
+    BLUE
+}
+
+abstract class AbstractExample {
+    {abstract} void abstractMethod()
+    +void concreteMethod()
+}
+
+class Example {
+    -color: Color
+    +void useInterface(IExample)
+}
+
+package "ExamplePackage" {
+    class Example2
+}
+
+Example ..> IExample : uses
+Example *-- Color : contains
+Example --|> AbstractExample : extends
+
+@enduml

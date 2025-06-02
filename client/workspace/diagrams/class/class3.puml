@@ -1,0 +1,12 @@
+@startuml
+package "ExamplePackage" {
+    class "Example2" as C2
+    class "Meiko" as C3
+
+}
+interface "Money" as C5
+class "Swag" as C1
+C3 --> C1
+C2 <-- C3
+
+@enduml

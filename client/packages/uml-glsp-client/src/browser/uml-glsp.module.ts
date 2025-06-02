@@ -49,21 +49,22 @@ import { umlToolPaletteModule } from './features/tool-palette/uml-tool-palette.m
 import { umlToolManagerModule } from './features/tools/tool-manager/uml-tool-manager.module.js';
 import { umlDiagramModules } from './uml/index.js';
 import { umlBaseViewsModule } from './views/uml-base-views.module.js';
+import {Container} from 'inversify';
 // GLSP Uses cjs version of inversify, so we need to use require to import it
 // eslint-disable-next-line @typescript-eslint/no-require-imports
-import inversify = require('inversify');
+//import inversify = require('inversify');
 
-export function createUMLDiagramContainer(...containerConfiguration: ContainerConfiguration): inversify.Container {
-    const container = initializeUMLDiagramContainer(new inversify.Container(), ...containerConfiguration);
+export function createUMLDiagramContainer(...containerConfiguration: ContainerConfiguration): Container {
+    const container = initializeUMLDiagramContainer(new Container(), ...containerConfiguration);
     bindOrRebind(container, TYPES.LogLevel).toConstantValue(LogLevel.info);
     container.rebind(ContainerManager).to(UMLContainerManager).inSingletonScope();
     return container;
 }
 
 export function initializeUMLDiagramContainer(
-    container: inversify.Container,
+    container: Container,
     ...containerConfiguration: ContainerConfiguration
-): inversify.Container {
+): Container {
     const accessibility: ContainerConfiguration = [
         glspToastModule,
         glspFocusTrackerModule,

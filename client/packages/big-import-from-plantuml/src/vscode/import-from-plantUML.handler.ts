@@ -15,7 +15,7 @@ import {
     type Disposable,
     type ExperimentalGLSPServerModelState
 } from '@borkdominik-biguml/big-vscode-integration/vscode';
-import { CreateNodeOperation, DisposableCollection } from '@eclipse-glsp/protocol';
+import { CreateNodeOperation, DisposableCollection, CreateEdgeOperation } from '@eclipse-glsp/protocol';
 import * as fs from 'fs';
 import { inject, injectable, postConstruct } from 'inversify';
 import * as path from 'path';
@@ -129,7 +129,9 @@ export class ImportFromPlantUMLActionHandler implements Disposable {
                         const annotatedPlantUmlContent = await PlantUMLParser.parse(selection!.description, plantUmlContent);
 
                         console.log(JSON.stringify(annotatedPlantUmlContent, null, 2));
-                        this.importGLSP(annotatedPlantUmlContent);
+                        const operations = this.importGLSP(annotatedPlantUmlContent, new Map<string, string>);
+                        console.log(JSON.stringify(operations));
+                        this.actionDispatcher.dispatch(BatchCreateOperation.create(operations));
                         // Use JSON to init
                         //const parser = PlantUMLParserFactory.getParser(selection.description);
 
@@ -165,25 +167,57 @@ export class ImportFromPlantUMLActionHandler implements Disposable {
         );
     }
 
-    importGLSP(elements: PlantUmlElement[]): void {
+    importGLSP(elements: PlantUmlElement[], nameIdMap: Map<string, string>, containerIdPackage?: string): BatchOperation[] {
         const operations: BatchOperation[] = [];
 
-        function handleClass(element: PlantUmlElement, isAbstract?: boolean, containerId?: string): BatchOperation {
+        function handleClass(element: PlantUmlElement, containerId?: string): BatchOperation {
             const tempId: TempCreationId = `temp_${v4()}`;
 
-            const createOperation = CreateNodeOperation.create(`CLASS__${isAbstract ? 'AbstractClass' : 'Class'}`, { containerId });
-            const updateActions: UpdateElementPropertyAction[] = [];
+            let createOperation;
 
-            if (element.name) {
+            switch(element.type){
+                case "class": 
+                    createOperation = CreateNodeOperation.create('CLASS__Class', { containerId });
+                    break;
+                case "abstract class" : 
+                    createOperation = CreateNodeOperation.create('CLASS__AbstractClass', { containerId });
+                    break;
+                case "enum" : 
+                    createOperation = CreateNodeOperation.create('CLASS__Enumeration', { containerId });
+                    break;
+                case "interface" : 
+                    createOperation = CreateNodeOperation.create('CLASS__Interface', { containerId });
+                    break;
+                case "usecase":
+                    createOperation = CreateNodeOperation.create('CLASS__UseCase', { containerId });
+                    break;
+                case "component":
+                    createOperation = CreateNodeOperation.create('CLASS__UseCase', { containerId });
+                    break;
+                case "package":
+                    createOperation = CreateNodeOperation.create('CLASS__Package', { containerId });
+                    break;
+                case "cloud":
+                    createOperation = CreateNodeOperation.create('CLASS__Package', { containerId });
+                    break;
+                case "database":
+                    createOperation = CreateNodeOperation.create('CLASS__Package', { containerId });
+                    break;
+            }
+
+
+            const updateActions: UpdateElementPropertyAction[] = [];
+            const naming = element.title ? element.title : element.name
+            if (naming) {
                 updateActions.push(
                     UpdateElementPropertyAction.create({
                         elementId: tempId,
                         propertyId: 'name',
-                        value: element.name
+                        value: naming
                     })
                 );
             }
-
+            
             return {
                 tempCreationId: tempId,
                 createOperation,
@@ -191,33 +225,10 @@ export class ImportFromPlantUMLActionHandler implements Disposable {
             };
         }
 
-        function handleProperty(containerId: string, property: MemberVariable): BatchOperation {
+        function handlePropertyOperation(containerId: string, operation: Method | MemberVariable | Member, type: string): BatchOperation {
             const tempId: TempCreationId = `temp_${v4()}`;
-
-            const createOperation = CreateNodeOperation.create(`CLASS__Property`, { containerId });
-            const updateActions: UpdateElementPropertyAction[] = [];
-
-            if (property.name) {
-                updateActions.push(
-                    UpdateElementPropertyAction.create({
-                        elementId: tempId,
-                        propertyId: 'name',
-                        value: property.name
-                    })
-                );
-            }
-
-            return {
-                tempCreationId: tempId,
-                createOperation,
-                updateActions
-            };
-        }
-
-        function handleOperation(containerId: string, operation: Method): BatchOperation {
-            const tempId: TempCreationId = `temp_${v4()}`;
-
-            const createOperation = CreateNodeOperation.create(`CLASS__Operation`, { containerId });
+            
+            const createOperation = CreateNodeOperation.create(`CLASS__${type}`, { containerId });
             const updateActions: UpdateElementPropertyAction[] = [];
 
             if (operation.name) {
@@ -237,34 +248,143 @@ export class ImportFromPlantUMLActionHandler implements Disposable {
             };
         }
 
+        function handleEdge(edge: PlantUmlElement, nameIdMap: Map<string, string>): BatchOperation {
+            const tempId: TempCreationId = `temp_${v4()}`;
+            /*
+            *   <|--   extension
+                <|..   implementation
+                *--    Composition
+                o--    Aggregation
+                <--    Dependency
+                <..    Dependency (weaker)
+            */
+            let type = ""
+            let from = ""
+            let to   = ""
+            // check left head
+            if (edge.leftArrowHead !== ""){
+                switch (edge.leftArrowHead){
+                    case "<|":
+                            if(edge.leftArrowBody === "-"){
+                                type = "Realization"
+                            }else{
+                                type = "InterfaceRealization"
+                            }
+                            break;
+                    case "*": type = "Composition"; break;
+                    case "o": type = "Aggregation"; break;
+                    case "<": type = "Dependency";  break;
+                }
+                from = edge.right !== undefined ? edge.right : ""
+                to   = edge.left !== undefined ? edge.left : ""
+            }else if(edge.rightArrowHead !== ""){
+                switch (edge.rightArrowHead){
+                    // does not work!
+                    case "|>":
+                            if(edge.rightArrowBody === "-"){
+                                type = "Realization"
+                            }else{
+                                type = "InterfaceRealization"
+                            }
+                            break;
+                    // works
+                    case "*": type = "Composition"; break;
+                    // works
+                    case "o": type = "Aggregation"; break;
+                    // works
+                    case ">": type = "Dependency";  break;
+                }
+                from = edge.left !== undefined ? edge.left : ""
+                to   = edge.right !== undefined ? edge.right : ""
+            }else {
+                // works
+                type = "Association"
+                from = edge.left !== undefined ? edge.left : ""
+                to   = edge.right !== undefined ? edge.right : ""
+            }
+            const createOperation = CreateEdgeOperation.create({
+                elementTypeId: `CLASS__${type}`,
+                sourceElementId: `${nameIdMap.get(from)}`,
+                targetElementId: `${nameIdMap.get(to)}`
+            });
+
+            const updateActions: UpdateElementPropertyAction[] = [];
+
+            if (edge.label) {
+                updateActions.push(
+                    UpdateElementPropertyAction.create({
+                        elementId: tempId,
+                        propertyId: 'name',
+                        value: edge.label
+                    })
+                );
+            }
+
+            return {
+                tempCreationId: tempId,
+                createOperation,
+                updateActions,
+            };
+        }
+
         for (const element of elements) {
+            console.log(element)
+            // edge creation needs to know ids that are generated on the fly!
             let operation: BatchOperation | undefined = undefined;
-            if (element.type === 'class') {
-                operation = handleClass(element);
-            } else if (element.type === 'abstract class') {
-                operation = handleClass(element, true);
+            if (element.type === 'class' || element.type === 'abstract class' || element.type === "enum" || element.type === "interface" || element.type === "usecase" || element.type === "component" || element.type === "package" || element.type === "cloud" || element.type === "database") {
+                if(element.name === undefined || element.name === ""){
+                    element.name = `name_${v4()}`;
+                }
+                operation = handleClass(element, containerIdPackage);
+                if (operation.tempCreationId !== undefined){
+                    nameIdMap.set(element.name, operation.tempCreationId);
+                }
+            } else if ('left' in element) {
+                operation = handleEdge(element, nameIdMap);
+            } else if (element.type === "note") {
+                // currently not in bigUML
+                continue;
+            } else if (element.type === "actor"){
+                continue;
+            } else if (element.type === ""){
+                continue;
             }
 
             if (!operation) {
                 continue;
             }
-
+            console.log("OPERATION: " + JSON.stringify(operation))
             operations.push(operation);
+
+            
+            if (element.type === "package" || element.type === "cloud" || element.type === "database"){
+                const ops = this.importGLSP(element.elements, nameIdMap, operation.tempCreationId)
+                for(const op of ops){
+                    if (!op) {
+                        continue;
+                    }
+                    operations.push(op);
+                }
+            }
 
             if (!operation.tempCreationId) {
                 continue;
             }
-
+            console.log(element);
+            if (!element.members) {
+                continue;
+            }
             for (const member of element.members as Member[]) {
-                if ('returnType' in member) {
-                    operations.push(handleOperation(operation.tempCreationId, member));
+                if('returnType' in member){
+                    operations.push(handlePropertyOperation(operation.tempCreationId, member, "Operation")); 
+                } else if (element.type === "enum"){
+                    operations.push(handlePropertyOperation(operation.tempCreationId, member, "EnumerationLiteral")); 
                 } else {
-                    operations.push(handleProperty(operation.tempCreationId, member));
+                    operations.push(handlePropertyOperation(operation.tempCreationId, member, "Property")); 
                 }
             }
         }
-
-        this.actionDispatcher.dispatch(BatchCreateOperation.create(operations));
+        return operations
     }
 
     /**
