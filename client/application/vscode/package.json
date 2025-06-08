@@ -299,8 +299,8 @@
     "onView:bigUML.outlineView"
   ],
   "dependencies": {
-    "@borkdominik-biguml/big-hello-world": "*",
     "@borkdominik-biguml/big-export-to-plantuml": "*",
+    "@borkdominik-biguml/big-hello-world": "*",
     "@borkdominik-biguml/big-import-from-plantuml": "*",
     "@borkdominik-biguml/big-minimap": "*",
     "@borkdominik-biguml/big-outline": "*",

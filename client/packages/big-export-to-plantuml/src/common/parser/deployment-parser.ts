@@ -7,213 +7,152 @@
  * SPDX-License-Identifier: MIT
  **********************************************************************************/
 
-import { type DiagramParser } from '../plantuml-parser.js';
+import { BaseDiagramParser, type Element } from './base-parser.js';
 
 /**
- * Parses Eclipse UML Deployment Diagrams to PlantUML format
+ * Parses UML Deployment Diagrams to PlantUML format
  */
-export class DeploymentDiagramParser implements DiagramParser {
-    private elementMap: Map<string, any> = new Map();
-    private relationships: Array<{ source: string; target: string; type: string; name?: string }> = [];
+export class DeploymentDiagramParser extends BaseDiagramParser {
+    protected override childProps: readonly string[] = ['nestedNode', 'nestedArtifact', 'nestedClassifier'];
+    attributeOwner = new Map<string, string>();
 
-    parse(model: any): string {
-        // Reset state
-        this.elementMap = new Map();
-        this.relationships = [];
+    protected arrowMap: Record<string, string> = {
+        communication: '--',
+        dependency: '..>',
+        generalization: '--|>',
+        manifestation: '..>',
+        deployment: '..>'
+    };
 
-        // Build element map for reference lookups
-        this.buildElementMap(model);
+    visitRelations = (el: any) => {
+        const cls = el.eClass || '';
 
-        // Parse elements and relationships
-        this.parseElements(model);
-        this.parseRelationships(model);
-
-        // Generate PlantUML code
-        const plantUml = this.generatePlantUml();
-
-        return plantUml;
-    }
-
-    private buildElementMap(model: any): void {
-        if (!model.packagedElement) {
-            return;
+        // CommunicationPath
+        if (cls.includes('CommunicationPath')) {
+            const [e1, e2] = el.memberEnd?.map((m: any) => m.$ref) || [];
+            const src = this.attributeOwner.get(e1);
+            const tgt = this.attributeOwner.get(e2);
+            if (src && tgt) this.relationships.push({ source: src, target: tgt, type: 'communication', label: 'CommunicationPath' });
         }
 
-        model.packagedElement.forEach((element: any) => {
-            if (element.id) {
-                this.elementMap.set(element.id, element);
-            }
-        });
-    }
-
-    private parseElements(model: any): void {
-        if (!model.packagedElement) {
-            return;
+        // Dependency
+        if (cls.includes('Dependency')) {
+            const c = el.client?.[0]?.$ref;
+            const s = el.supplier?.[0]?.$ref;
+            if (c && s) this.relationships.push({ source: c, target: s, type: 'dependency' });
         }
 
-        model.packagedElement.forEach((element: any) => {
-            // Handle nested elements if they exist
-            if (element.nestedClassifier) {
-                element.nestedClassifier.forEach((nestedElement: any) => {
-                    if (nestedElement.id) {
-                        this.elementMap.set(nestedElement.id, nestedElement);
-                    }
-                });
-            }
-        });
-    }
-
-    private parseRelationships(model: any): void {
-        if (!model.packagedElement) {
-            return;
+        // Generalization
+        for (const g of el.generalization || []) {
+            const gen = g.general?.$ref;
+            if (gen) this.relationships.push({ source: el.id, target: gen, type: 'generalization' });
         }
 
-        model.packagedElement.forEach((element: any) => {
-            // Handle communication paths
-            if (element.eClass.includes('CommunicationPath')) {
-                this.parseCommunicationPath(element);
-            }
-
-            // Handle dependencies
-            if (element.eClass.includes('Dependency')) {
-                this.parseDependency(element);
-            }
-
-            // Handle generalizations
-            if (element.generalization) {
-                element.generalization.forEach((gen: any) => {
-                    if (gen.general && gen.general.$ref) {
-                        this.relationships.push({
-                            source: element.id,
-                            target: gen.general.$ref,
-                            type: 'generalization'
-                        });
-                    }
-                });
-            }
-
-            // Handle artifacts deployed on nodes
-            if (element.deployment) {
-                element.deployment.forEach((deployment: any) => {
-                    if (deployment.supplier && deployment.supplier.length > 0) {
-                        this.relationships.push({
-                            source: element.id,
-                            target: deployment.supplier[0].$ref,
-                            type: 'deployment'
-                        });
-                    }
-                });
-            }
-        });
-    }
-
-    private parseCommunicationPath(path: any): void {
-        if (path.memberEnd && path.memberEnd.length >= 2) {
-            const end1 = path.memberEnd[0].$ref;
-            const end2 = path.memberEnd[1].$ref;
-
-            let source: any = null;
-            let target: any = null;
-
-            for (const element of this.elementMap.values()) {
-                if (element.ownedAttribute) {
-                    for (const attr of element.ownedAttribute) {
-                        if (attr.id === end1) {
-                            source = element;
-                        } else if (attr.id === end2) {
-                            target = element;
-                        }
-                    }
-                }
-            }
-
-            if (source && target) {
-                this.relationships.push({
-                    source: source.id,
-                    target: target.id,
-                    type: 'communication',
-                    name: path.name
-                });
-            }
-        }
-    }
-
-    private parseDependency(dependency: any): void {
-        if (dependency.client && dependency.client.length > 0 && dependency.supplier && dependency.supplier.length > 0) {
-            this.relationships.push({
-                source: dependency.client[0].$ref,
-                target: dependency.supplier[0].$ref,
-                type: 'dependency',
-                name: dependency.name
-            });
-        }
-    }
-
-    private getElementType(element: any): string {
-        if (!element || !element.eClass) {
-            return 'node';
+        // Manifestation
+        for (const m of el.manifestation || []) {
+            const sup = m.supplier?.[0]?.$ref;
+            if (sup) this.relationships.push({ source: el.id, target: sup, type: 'manifestation', label: '<<manifest>>' });
         }
 
-        const eClass = element.eClass.toLowerCase();
-
-        if (eClass.includes('artifact')) {
-            return 'artifact';
-        } else if (eClass.includes('device')) {
-            return 'device';
-        } else if (eClass.includes('executionenvironment')) {
-            return 'node'; // Using node as a default for execution environment
-        } else if (eClass.includes('component')) {
-            return 'component';
-        } else if (eClass.includes('package')) {
-            return 'package';
-        } else if (eClass.includes('interface')) {
-            return 'interface';
-        } else {
-            return 'node'; // Default to node for unknown types
+        // Deployment
+        for (const d of el.deployment || []) {
+            const sup = d.supplier?.[0]?.$ref;
+            if (sup) this.relationships.push({ source: sup, target: el.id, type: 'deployment', label: '<<deploy>>' });
         }
+
+        // Recurse into nested children
+        for (const prop of this.childProps) {
+            for (const child of el[prop] || []) {
+                this.visitRelations(child);
+            }
+        }
+    };
+
+    visitElement = (el: any, parentId?: string) => {
+        // Determine type: from eClass, or default node if it has nested contents
+        let type = this.getElementType(el);
+        const hasChildren = Boolean(
+            (el.nestedNode && el.nestedNode.length) ||
+                (el.nestedArtifact && el.nestedArtifact.length) ||
+                (el.nestedClassifier && el.nestedClassifier.length)
+        );
+        if (!type && hasChildren) {
+            type = 'node';
+        }
+
+        const name = this.getUniqueName(el.name, this.elements);
+
+        if (type && el.id && el.name) {
+            this.elements.push({ id: el.id, name, type, parentId });
+        }
+
+        // Map any ownedAttribute id for CommunicationPath
+        for (const attr of el.ownedAttribute || []) {
+            if (attr.id) this.attributeOwner.set(attr.id, el.id);
+        }
+
+        // Recurse into nested containers
+        for (const prop of this.childProps) {
+            for (const child of el[prop] || []) {
+                this.visitElement(child, type ? el.id : parentId);
+            }
+        }
+    };
+
+    private getElementType(el: any): string {
+        const cls = (el.eClass || '').toLowerCase();
+        if (cls.includes('artifact')) return 'artifact';
+        if (cls.includes('device') || cls.includes('executionenvironment') || cls.includes('node')) return 'node';
+        if (cls.includes('component')) return 'component';
+        if (cls.includes('interface')) return 'interface';
+        if (cls.includes('package')) return 'package';
+        if (cls.includes('deploymentspecification')) return 'node';
+        return '';
     }
 
-    private getRelationshipSymbol(type: string): string {
-        switch (type) {
-            case 'communication':
-                return '--';
-            case 'dependency':
-                return '..>';
-            case 'generalization':
-                return '--|>';
-            case 'deployment':
-                return '->>>';
-            default:
-                return '--';
-        }
-    }
-
-    private generatePlantUml(): string {
+    renderPlantUml = () => {
         const lines: string[] = ['@startuml'];
+        const byId = new Map(this.elements.map(e => [e.id, e]));
+        const children = new Map<string, Element[]>();
 
-        // Add all nodes, artifacts, etc.
-        for (const element of this.elementMap.values()) {
-            if (!element.name) continue;
+        // Group elements by parent
+        this.elements.forEach(e => {
+            if (e.parentId) {
+                const arr = children.get(e.parentId) || [];
+                arr.push(e);
+                children.set(e.parentId, arr);
+            }
+        });
 
-            const elementType = this.getElementType(element);
-            lines.push(`${elementType} "${element.name}"`);
-        }
+        // Recursive drawer
+        const drawn = new Set<string>();
+        const draw = (e: Element) => {
+            if (drawn.has(e.id)) return;
+            drawn.add(e.id);
+            const kids = children.get(e.id) || [];
+            if (kids.length) {
+                lines.push(`${e.type} "${e.name}" {`);
+                kids.forEach(draw);
+                lines.push('}');
+            } else {
+                lines.push(`${e.type} "${e.name}"`);
+            }
+        };
 
-        // Add relationships
-        for (const relation of this.relationships) {
-            const sourceElement = this.elementMap.get(relation.source);
-            const targetElement = this.elementMap.get(relation.target);
+        // Draw all top-level elements
+        this.elements.filter(e => !e.parentId).forEach(draw);
 
-            if (!sourceElement || !targetElement) continue;
-            if (!sourceElement.name || !targetElement.name) continue;
-
-            const symbol = this.getRelationshipSymbol(relation.type);
-            const label = relation.name ? ` : ${relation.name}` : '';
-
-            lines.push(`"${sourceElement.name}" ${symbol} "${targetElement.name}"${label}`);
+        // Draw relationships
+        for (const r of this.relationships) {
+            const src = byId.get(r.source)?.name;
+            const tgt = byId.get(r.target)?.name;
+            if (!src || !tgt) continue;
+            const arrow = this.getArrow(r.type);
+            const lbl = r.label ? ` : ${r.label}` : '';
+            lines.push(`"${src}" ${arrow} "${tgt}"${lbl}`);
         }
 
         lines.push('@enduml');
         return lines.join('\n');
-    }
+    };
 }
