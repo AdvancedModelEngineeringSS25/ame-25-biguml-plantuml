@@ -76,7 +76,8 @@ export class ExportToPlantUMLActionHandler implements Disposable {
             this.actionListener.handleVSCodeRequest(RequestExportToPlantUMLAction.KIND, async () => {
                 try {
                     await this.logInfo('Starting PlantUML export');
-                    const model = this.modelState.getModelState(); // Get the current model state
+                    // Get the current model state
+                    const model = this.modelState.getModelState();
                     if (!model) {
                         const error = 'No model state available';
                         await this.logError(error);
@@ -86,15 +87,14 @@ export class ExportToPlantUMLActionHandler implements Disposable {
                         });
                     }
 
-                    const sourceModel = model.getSourceModel(); // Get the source model from the current model state
+                    // Get the source model from the current model state
+                    const sourceModel = model.getSourceModel();
                     await this.logInfo('Retrieved source model successfully');
 
                     try {
                         // Detect diagram type from the model
                         const diagramType = getDiagramType(model);
                         await this.logInfo(`Detected diagram type: ${diagramType}`);
-
-                        console.log('model', JSON.stringify(sourceModel, null, 2));
 
                         const parser = PlantUMLParserFactory.getParser(diagramType);
                         const plantUmlContent = parser.parse(sourceModel);
