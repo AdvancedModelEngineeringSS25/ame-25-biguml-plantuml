@@ -7,159 +7,175 @@
  * SPDX-License-Identifier: MIT
  **********************************************************************************/
 
-import { type DiagramParser } from '../plantuml-parser.js';
+import { BaseDiagramParser, type Element, type Relationship } from './base-parser.js';
 
 /**
- * Parses Eclipse UML Activity Diagrams to PlantUML format
+ * Parses UML Activity Diagrams to PlantUML format
+ *
+ * Works different than other parsers:
+ * Starts with the initial node and traverses all outgoing relationships recursively.
  */
-export class ActivityDiagramParser implements DiagramParser {
-    private nodeMap: Map<string, any> = new Map();
-    private edges: any[] = [];
-    private processedEdges: Set<string> = new Set();
+export class ActivityDiagramParser extends BaseDiagramParser {
+    // Not used in the activity diagram because it has a different structure
+    protected override arrowMap: Record<string, string>;
+    protected override childProps: readonly string[];
+    protected override visitElement: (el: any) => void;
+    protected override visitRelations: (el: any) => void;
 
-    private buildNodeMap(model: any): void {
-        const activity = model.packagedElement.find((el: any) => el.eClass.includes('Activity'));
-        if (!activity) return;
+    // Holds the merge/join nodes, where the flow continues after a decision or fork
+    private branchExitMap: Record<string, Element> = {};
 
-        activity.node?.forEach((node: any) => {
-            this.nodeMap.set(node.id, node);
-        });
+    public override parse(model: any): string {
+        // Locate the activity element
+        const activity = (model.packagedElement || []).find((el: any) => (el.eClass || '').toLowerCase().includes('//activity'));
+        if (!activity) return '';
 
-        this.edges = activity.edge || [];
+        // Collect all nodes as elements
+        for (const el of activity.node || []) {
+            if (!el.id) continue;
+            const type = this.getElementType(el);
+            const name = type === 'OpaqueAction' ? el.name || 'Action' : type;
+            this.elements.push({ id: el.id, name, type });
+        }
+
+        // Collect all control flows as relationships
+        for (const edge of activity.edge || []) {
+            if (!edge.id || !edge.source?.$ref || !edge.target?.$ref) continue;
+            const src = edge.source.$ref;
+            const tgt = edge.target.$ref;
+            this.relationships.push({
+                source: src,
+                target: tgt,
+                type: 'ControlFlow',
+                label: edge.id
+            });
+        }
+
+        return this.renderPlantUml();
     }
 
-    private parseNode(node: any): string {
-        if (!node) return '';
+    private getElementType(el: any): string {
+        const cls = (el.eClass || '').toLowerCase();
+        if (cls.includes('initialnode')) return 'InitialNode';
+        if (cls.includes('activityfinalnode')) return 'ActivityFinalNode';
+        if (cls.includes('flowfinalnode')) return 'FlowFinalNode';
+        if (cls.includes('forknode')) return 'ForkNode';
+        if (cls.includes('joinnode')) return 'JoinNode';
+        if (cls.includes('mergenode')) return 'MergeNode';
+        if (cls.includes('decisionnode')) return 'DecisionNode';
+        if (cls.includes('opaqueaction')) return 'OpaqueAction';
+        if (cls.includes('sendsignalaction')) return 'SendSignalAction';
+        if (cls.includes('accepteventaction')) return 'AcceptEventAction';
+        return '';
+    }
 
-        switch (true) {
-            case node.eClass.includes('ActivityFinalNode'):
-                return 'stop';
-            case node.eClass.includes('InitialNode'):
-                return 'start';
-            case node.eClass.includes('DecisionNode'):
-                // Decision nodes are handled differently in edge parsing
-                return '';
-            case node.eClass.includes('FlowFinalNode'):
-                return 'end';
-            case node.eClass.includes('OpaqueAction'):
-                return `:${node.name || 'Action'};`;
+    renderPlantUml = () => {
+        const lines: string[] = ['@startuml', 'start'];
+        const visited = new Set<string>();
+
+        const initial = this.elements.find(e => e.type === 'InitialNode');
+        if (initial) {
+            this.traverse(initial, lines, visited);
+        }
+
+        lines.push('@enduml');
+        return lines.join('\n');
+    };
+
+    // Traverse the activity diagram elements recursively
+    private traverse(current: Element, lines: string[], visited: Set<string>, currentId: string = '') {
+        visited.add(current.id);
+
+        const outgoing = this.relationships.filter(r => r.source === current.id);
+
+        switch (current.type) {
+            case 'OpaqueAction':
+                lines.push(`:${current.name};`);
+                this.traverseNext(outgoing, lines, visited, currentId);
+                break;
+            case 'SendSignalAction':
+                lines.push(`:${current.name}; <<sendSignal>>`);
+                this.traverseNext(outgoing, lines, visited, currentId);
+                break;
+            case 'AcceptEventAction':
+                lines.push(`:${current.name}; <<acceptEvent>>`);
+                this.traverseNext(outgoing, lines, visited, currentId);
+                break;
+            case 'ForkNode':
+                lines.push('fork');
+                // Recursively traverse all outgoing relationships
+                outgoing.forEach((rel, idx) => {
+                    const next = this.elements.find(e => e.id === rel.target);
+                    if (!next) return;
+                    if (idx > 0) {
+                        lines.push('fork again');
+                    }
+                    this.traverse(next, lines, new Set(), current.id);
+                });
+                lines.push('end fork');
+                // If there is a branch exit, traverse it
+                if (this.branchExitMap[current.id]) {
+                    this.traverse(this.branchExitMap[current.id], lines, new Set());
+                }
+                break;
+
+            case 'DecisionNode':
+                lines.push('switch ()');
+                // Recursively traverse all outgoing relationships
+                for (const rel of outgoing) {
+                    const next = this.elements.find(e => e.id === rel.target);
+                    if (next) {
+                        lines.push('case ()');
+                        this.traverse(next, lines, new Set(), current.id);
+                    }
+                }
+                lines.push('endswitch');
+                // If there is a branch exit, traverse it
+                if (this.branchExitMap[current.id]) {
+                    this.traverse(this.branchExitMap[current.id], lines, new Set());
+                }
+                break;
+
+            case 'MergeNode':
+                // Only continue if the merge node is the first visited node
+                if (visited.size > 1) {
+                    this.branchExitMap[currentId] = current;
+                    return;
+                }
+                this.traverseNext(outgoing, lines, visited);
+                break;
+
+            case 'JoinNode':
+                // Only continue if the join node is the first visited node
+                if (visited.size > 1) {
+                    this.branchExitMap[currentId] = current;
+                    return;
+                }
+                this.traverseNext(outgoing, lines, visited);
+                break;
+
+            case 'FlowFinalNode':
+                lines.push('end');
+                break;
+
+            case 'ActivityFinalNode':
+                lines.push('stop');
+                break;
+
+            case 'InitialNode':
+                this.traverseNext(outgoing, lines, visited);
+                break;
+
             default:
-                return `:WorkInProgress;`;
+                this.traverseNext(outgoing, lines, visited);
         }
     }
 
-    /**
-     * Retrieves connected edges for a given node
-     */
-    private getConnectedEdges(nodeId: string): any[] {
-        return this.edges.filter(edge => edge.source.$ref === nodeId && !this.processedEdges.has(edge.id));
-    }
-
-    /**
-     * Recursively parses connected nodes and edges (important for decision nodes)
-     */
-    private parseConnectedFlow(nodeId: string): string {
-        const connectedEdges = this.getConnectedEdges(nodeId);
-        let result = '';
-
-        connectedEdges.forEach(edge => {
-            this.processedEdges.add(edge.id);
-            const target = this.nodeMap.get(edge.target.$ref);
-            const targetNode = this.parseNode(target);
-            if (targetNode) {
-                result += targetNode + '\n';
-                // Recursively add connected edges from the target
-                result += this.parseConnectedFlow(edge.target.$ref);
-            }
-        });
-
-        return result;
-    }
-
-    private parseDecisionNode(node: any): string {
-        const outgoingEdges = this.getConnectedEdges(node.id);
-
-        let result = '';
-        outgoingEdges.forEach((edge, index) => {
-            const target = this.nodeMap.get(edge.target.$ref);
-            this.processedEdges.add(edge.id);
-
-            if (index === 0) {
-                result += `if () then \n`;
-                result += `  ${this.parseNode(target)}\n`;
-                result += `  ${this.parseConnectedFlow(target.id)}`;
-            } else if (index === outgoingEdges.length - 1) {
-                result += `else\n`;
-                result += `  ${this.parseNode(target)}\n`;
-                result += `  ${this.parseConnectedFlow(target.id)}`;
-            } else {
-                result += `elseif () then\n`;
-                result += `  ${this.parseNode(target)}\n`;
-                result += `  ${this.parseConnectedFlow(target.id)}`;
-            }
-        });
-
-        result += 'endif';
-        return result;
-    }
-
-    /**
-     * Gets the initial nodes (nodes without incoming edges)
-     */
-    private findInitialNodes(activity: any): any[] {
-        return activity.node?.filter((node: any) => !node.incoming || node.incoming.length === 0) || [];
-    }
-
-    /**
-     * Traverse from a node through its outgoing edges
-     */
-    private traverseFromNode(node: any): string {
-        if (!node) return '';
-
-        let result = '';
-        const nodeContent = this.parseNode(node);
-        if (nodeContent) {
-            result += nodeContent + '\n';
+    // Traverse the next elements based on outgoing relationships
+    private traverseNext(outgoing: Relationship[], lines: string[], visited: Set<string>, currendId: string = '') {
+        for (const rel of outgoing) {
+            const next = this.elements.find(e => e.id === rel.target);
+            if (next) this.traverse(next, lines, visited, currendId);
         }
-
-        // If this is a decision node, handle it specially
-        if (node.eClass.includes('DecisionNode')) {
-            result += this.parseDecisionNode(node);
-            return result;
-        }
-
-        // Process outgoing edges
-        node.outgoing?.forEach((outEdge: any) => {
-            const edge = this.edges.find(e => e.id === outEdge.$ref);
-            if (edge && !this.processedEdges.has(edge.id)) {
-                this.processedEdges.add(edge.id);
-                const targetNode = this.nodeMap.get(edge.target.$ref);
-                result += this.traverseFromNode(targetNode);
-            }
-        });
-
-        return result;
-    }
-
-    parse(model: any): string {
-        this.buildNodeMap(model);
-        this.processedEdges.clear();
-
-        const activity = model.packagedElement.find((el: any) => el.eClass.includes('Activity'));
-        if (!activity) {
-            throw new Error('No activity found in model');
-        }
-
-        const plantUml: string[] = ['@startuml'];
-
-        // Find initial node
-        const initialNode = this.findInitialNodes(activity)[0];
-        const traversalResult = this.traverseFromNode(initialNode);
-        if (traversalResult) {
-            plantUml.push(traversalResult);
-        }
-
-        plantUml.push('@enduml');
-        return plantUml.join('\n');
     }
 }

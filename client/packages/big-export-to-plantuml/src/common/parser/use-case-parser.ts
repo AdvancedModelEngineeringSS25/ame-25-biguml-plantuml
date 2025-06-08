@@ -6,199 +6,147 @@
  *
  * SPDX-License-Identifier: MIT
  **********************************************************************************/
-
-import { type DiagramParser } from '../plantuml-parser.js';
+import { BaseDiagramParser, type Element } from './base-parser.js';
 
 /**
- * Parses Eclipse UML Use Case Diagrams to PlantUML format
+ * Parses UML Use–Case Diagrams to PlantUML format
  */
-export class UseCaseDiagramParser implements DiagramParser {
-    private stateMap: Map<string, any> = new Map();
-    private idToVariableName: Map<string, string> = new Map();
-    private actors: Map<string, { name: string; relations: string[] }> = new Map();
-    private useCases: Map<string, { name: string; component: string; relations: string[] }> = new Map();
-    private associations: string[] = [];
+export class UseCaseDiagramParser extends BaseDiagramParser {
+    protected override childProps: readonly string[] = ['packagedElement', 'ownedUseCase'];
+    protected override arrowMap: Record<string, string> = {
+        association: '--',
+        include: '..>',
+        extend: '..>',
+        generalization: '--|>'
+    };
 
-    parse(model: any): string {
-        // Reset state
-        this.stateMap.clear();
-        this.idToVariableName.clear();
-        this.actors.clear();
-        this.useCases.clear();
-        this.associations = [];
+    visitRelations = (el: any) => {
+        const cls = el.eClass || '';
 
-        const elements = model.packagedElement || [];
-
-        // First pass: Register all actors and use cases without relationships
-        elements.forEach((element: any) => {
-            if (element.eClass.includes('#//Actor')) {
-                this.registerActor(element);
-            } else if (element.eClass.includes('#//Component')) {
-                this.processComponent(element);
-            }
-        });
-
-        // Second pass: Process actor generalizations now that all actors are registered
-        elements.forEach((element: any) => {
-            if (element.eClass.includes('#//Actor')) {
-                this.processActorGeneralizations(element);
-            }
-        });
-
-        // Third pass: Process associations and relationships
-        elements.forEach((element: any) => {
-            if (element.eClass.includes('#//Association')) {
-                this.processAssociation(element);
-            }
-        });
-
-        // Generate PlantUML code
-        return this.generatePlantUMLCode();
-    }
-
-    private registerActor(actor: any): void {
-        const id = actor.id;
-        const name = actor.name;
-
-        // First pass: Just register the actor without relationships
-        this.actors.set(id, { name, relations: [] });
-    }
-
-    private processActorGeneralizations(actor: any): void {
-        const storedActor = this.actors.get(actor.id);
-        if (!storedActor) return;
-
-        const relations: string[] = [];
-
-        // Handle generalizations (inheritance)
-        if (actor.generalization) {
-            actor.generalization.forEach((gen: any) => {
-                if (gen.general?.$ref) {
-                    const parentName = this.findActorNameById(gen.general.$ref);
-                    if (parentName) {
-                        relations.push(`"${actor.name}" --|> "${parentName}"`);
+        // Include / extend on use‐cases
+        if (el.ownedUseCase) {
+            for (const uc of el.ownedUseCase) {
+                // Include
+                for (const inc of uc.include || []) {
+                    const src = uc.id;
+                    const tgt = inc.addition?.$ref;
+                    if (src && tgt) {
+                        this.relationships.push({ source: src, target: tgt, type: 'include', label: '<<include>>' });
                     }
                 }
-            });
+                // Extend
+                for (const ext of uc.extend || []) {
+                    const src = uc.id;
+                    const tgt = ext.extendedCase?.$ref;
+                    if (src && tgt) {
+                        this.relationships.push({ source: src, target: tgt, type: 'extend', label: '<<extend>>' });
+                    }
+                }
+            }
         }
 
-        // Update the stored actor with its relationships
-        storedActor.relations = relations;
-    }
-
-    private processComponent(component: any): void {
-        if (!component.ownedUseCase) return;
-
-        // First pass: Store use cases without relationships
-        const useCases = component.ownedUseCase;
-        useCases.forEach((useCase: any) => {
-            this.useCases.set(useCase.id, {
-                name: useCase.name,
-                component: component.name,
-                relations: []
-            });
-        });
-
-        // Second pass: Process relationships now that all use cases are registered
-        useCases.forEach((useCase: any) => {
-            const storedUseCase = this.useCases.get(useCase.id);
-            if (!storedUseCase) return;
-
-            const relations: string[] = [];
-
-            // Handle include relationships
-            if (useCase.include) {
-                useCase.include.forEach((inc: any) => {
-                    const targetId = inc.addition?.$ref;
-                    const targetName = targetId ? this.findUseCaseNameById(targetId) : undefined;
-                    if (targetName) {
-                        relations.push(`"${useCase.name}" ..> "${targetName}" : <<include>>`);
-                    }
-                });
-            }
-
-            // Handle extend relationships
-            if (useCase.extend) {
-                useCase.extend.forEach((ext: any) => {
-                    const targetId = ext.extendedCase?.$ref;
-                    const targetName = targetId ? this.findUseCaseNameById(targetId) : undefined;
-                    if (targetName) {
-                        relations.push(`"${useCase.name}" ..> "${targetName}" : <<extend>>`);
-                    }
-                });
-            }
-
-            // Update the stored use case with its relationships
-            storedUseCase.relations = relations;
-        });
-    }
-
-    private processAssociation(association: any): void {
-        if (!association.memberEnd || association.memberEnd.length !== 2) return;
-
-        const end1Ref = association.memberEnd[0].$ref;
-        const end2Ref = association.memberEnd[1].$ref;
-
-        const ownedEnds = association.ownedEnd || [];
-        const end1 = ownedEnds.find((end: any) => end.id === end1Ref);
-        const end2 = ownedEnds.find((end: any) => end.id === end2Ref);
-
-        if (!end1?.type?.$ref || !end2?.type?.$ref) return;
-
-        const [actorEnd, useCaseEnd] = end1.type.$ref.includes('#//Actor') ? [end1, end2] : [end2, end1];
-
-        if (actorEnd?.type?.$ref && useCaseEnd?.type?.$ref) {
-            const actorName = this.findActorNameById(actorEnd.type.$ref);
-            const useCaseName = this.findUseCaseNameById(useCaseEnd.type.$ref);
-            if (actorName && useCaseName) {
-                this.associations.push(`"${actorName}" -- "${useCaseName}"`);
+        // Generalization
+        for (const g of el.generalization || []) {
+            const src = el.id;
+            const tgt = g.general?.$ref;
+            if (src && tgt) {
+                this.relationships.push({ source: src, target: tgt, type: 'generalization' });
             }
         }
+
+        // Associations
+        if (cls.toLowerCase().includes('association')) {
+            const ends = el.ownedEnd || [];
+            if (ends.length === 2) {
+                const [e1, e2] = ends;
+                const src = e1.type?.$ref;
+                const tgt = e2.type?.$ref;
+                if (src && tgt) {
+                    this.relationships.push({ source: src, target: tgt, type: 'association' });
+                }
+            }
+        }
+
+        // Recurse into nested children
+        for (const prop of this.childProps) {
+            for (const child of el[prop] || []) {
+                this.visitRelations(child);
+            }
+        }
+    };
+
+    visitElement = (el: any, parentId?: string) => {
+        let type = this.getElementType(el);
+        // Treat Component as a package/container if it has use cases
+        const hasUseCases = Boolean(el.ownedUseCase && el.ownedUseCase.length);
+        if (!type && hasUseCases) {
+            type = 'package';
+        }
+
+        const name = this.getUniqueName(el.name || '', this.elements);
+
+        if (type && el.id && el.name !== undefined) {
+            this.elements.push({ id: el.id, name, type, parentId });
+        }
+
+        for (const prop of this.childProps) {
+            for (const child of el[prop] || []) {
+                this.visitElement(child, type ? el.id : parentId);
+            }
+        }
+    };
+
+    private getElementType(el: any): string {
+        if (!el || !el.eClass) return 'usecase';
+        const cls = (el.eClass || '').toLowerCase();
+        if (cls.includes('actor')) return 'actor';
+        if (cls.includes('component')) return 'component';
+        return '';
     }
 
-    private findActorNameById(id: string): string | undefined {
-        return this.actors.get(id)?.name;
-    }
-
-    private findUseCaseNameById(id: string): string | undefined {
-        return this.useCases.get(id)?.name;
-    }
-
-    private generatePlantUMLCode(): string {
+    renderPlantUml = () => {
         const lines: string[] = ['@startuml'];
+        const byId = new Map(this.elements.map(e => [e.id, e]));
+        const children = new Map<string, Element[]>();
 
-        // Add actors
-        for (const [_, actor] of this.actors) {
-            lines.push(`actor "${actor.name}"`);
-        }
-
-        // Add components with use cases
-        const componentMap = new Map<string, string[]>();
-        for (const [_, useCase] of this.useCases) {
-            if (!componentMap.has(useCase.component)) {
-                componentMap.set(useCase.component, []);
+        // Group children by parentId
+        for (const e of this.elements) {
+            if (e.parentId) {
+                const arr = children.get(e.parentId) || [];
+                arr.push(e);
+                children.set(e.parentId, arr);
             }
-            componentMap.get(useCase.component)?.push(`  usecase "${useCase.name}"`);
         }
 
-        for (const [component, useCases] of componentMap) {
-            lines.push(`rectangle "${component}" {`);
-            lines.push(...useCases);
-            lines.push('}');
+        const drawn = new Set<string>();
+        const draw = (e: Element) => {
+            if (drawn.has(e.id)) return;
+            drawn.add(e.id);
+
+            const kids = children.get(e.id) || [];
+            if (kids.length) {
+                lines.push(`${e.type} "${e.name}" {`);
+                kids.forEach(draw);
+                lines.push(`}`);
+            } else {
+                lines.push(`${e.type} "${e.name}"`);
+            }
+        };
+
+        // Draw roots
+        this.elements.filter(e => !e.parentId).forEach(draw);
+
+        // Draw relationships
+        for (const r of this.relationships) {
+            const s = byId.get(r.source)?.name;
+            const t = byId.get(r.target)?.name;
+            if (!s || !t) continue;
+            const arrow = this.getArrow(r.type);
+            const lbl = r.label ? ` : ${r.label}` : '';
+            lines.push(`"${s}" ${arrow} "${t}"${lbl}`);
         }
 
-        // Add all relationships
-        for (const [_, actor] of this.actors) {
-            lines.push(...actor.relations);
-        }
-
-        for (const [_, useCase] of this.useCases) {
-            lines.push(...useCase.relations);
-        }
-
-        lines.push(...this.associations);
         lines.push('@enduml');
-
         return lines.join('\n');
-    }
+    };
 }

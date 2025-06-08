@@ -6,27 +6,27 @@
 | --------------------- | ------ | ----- |
 | Abstract Class        | ❌     |       |
 | Class                 | ✅     |       |
-| Data Type             | ❌     |       |
+| Data Type             | ✅     |       |
 | Enumeration           | ✅     |       |
 | Interface             | ✅     |       |
-| Package               | ❌     |       |
+| Package               | ✅     |       |
 | Primitive Type        | ❌     |       |
-| Enumeration Literal   | ❌     |       |
+| Enumeration Literal   | ✅     |       |
 | Operation             | ✅     |       |
 | Property              | ✅     |       |
 | Slot                  | ❌     |       |
 | Abstraction           | ❌     |       |
-| Aggregation           | ❌     |       |
-| Association           | ❌     |       |
-| Composition           | ❌     |       |
-| Dependency            | ❌     |       |
-| Element Import        | ❌     |       |
-| Generalization        | ❌     |       |
+| Aggregation           | ✅     |       |
+| Association           | ✅     |       |
+| Composition           | ✅     |       |
+| Dependency            | ✅     |       |
+| Element Import        | ✅     |       |
+| Generalization        | ✅     |       |
 | Interface Realization | ✅     |       |
-| Package Import        | ❌     |       |
-| Package Merge         | ❌     |       |
-| Realization           | ❌     |       |
-| Substitution          | ❌     |       |
+| Package Import        | ✅     |       |
+| Package Merge         | ✅     |       |
+| Realization           | ✅     |       |
+| Substitution          | ✅     |       |
 | Usage                 | ✅     |       |
 
 ---
@@ -36,15 +36,15 @@
 | Tool                    | Status | Notes                                                                       |
 | ----------------------- | ------ | --------------------------------------------------------------------------- |
 | Artifact                | ✅     |                                                                             |
-| DeploymentSpecification | ❌     |                                                                             |
+| DeploymentSpecification | ✅     |                                                                             |
 | Device                  | ❌     | Bug: Breaks the diagram                                                     |
-| ExecutionEnvironment    | ❌     |                                                                             |
-| Model                   | ❌     |                                                                             |
+| ExecutionEnvironment    | ✅     |                                                                             |
+| Model                   | ✅     |                                                                             |
 | Node                    | ✅     |                                                                             |
-| Package                 | ❌     |                                                                             |
-| Operation               | ❌     |                                                                             |
-| Property                | ❌     |                                                                             |
-| CommunicationPath       | 🛠️     | Bug: Deleting causes embedding into nodes, values not supported in PlantUml |
+| Package                 | ✅     |                                                                             |
+| Operation               | ✅     |                                                                             |
+| Property                | ✅     |                                                                             |
+| CommunicationPath       | ✅     | Bug: Deleting causes embedding into nodes, values not supported in PlantUml |
 | Dependency              | ✅     |                                                                             |
 | Deployment              | ✅     |                                                                             |
 | Generalization          | ✅     |                                                                             |
@@ -56,7 +56,7 @@
 
 | Tool           | Status | Notes                                                      |
 | -------------- | ------ | ---------------------------------------------------------- |
-| Region         | 🛠️     | Same as concurrent State? Required for diagram to function |
+| Region         | ✅     | Same as concurrent State? Required for diagram to function |
 | State          | ✅     |                                                            |
 | StateMachine   | ✅     |                                                            |
 | Choice         | ✅     |                                                            |
@@ -74,23 +74,37 @@
 
 | Tool                | Status | Notes |
 | ------------------- | ------ | ----- |
-| Accept Event Action | ❌     |       |
+| Accept Event Action | ✅     |       |
 | Action              | ✅     |       |
-| Send Signal Action  | ❌     |       |
+| Send Signal Action  | ✅     |       |
 | Activity            | ✅     |       |
-| Activity Partition  | 🛠️     |       |
+| Activity Partition  | ✅     |       |
 | Activity Final Node | ✅     |       |
 | Decision Node       | ✅     |       |
 | Flow Final Node     | ✅     |       |
-| Fork Node           | ❌     |       |
+| Fork Node           | ✅     |       |
 | Initial Node        | ✅     |       |
-| Join Node           | ❌     |       |
-| Merge Node          | ❌     |       |
+| Join Node           | ✅     |       |
+| Merge Node          | ✅     |       |
 | Edge                | ✅     |       |
 | Activity Parameter  | ❌     |       |
 | Central Buffer Node | ❌     |       |
 | Input Pin           | ❌     |       |
 | Output Pin          | ❌     |       |
+
+## Use Case Diagram
+
+| Tool           | Status | Notes |
+| -------------- | ------ | ----- |
+| Actor          | ✅     |       |
+| Subject        | ✅     |       |
+| Usecase        | ✅     |       |
+| Association    | ✅     |       |
+| Extend         | ✅     |       |
+| Generalization | ✅     |       |
+| Include        | ✅     |       |
+
+- Association and Generalization on actor have a very small click box
 
 ### Additional Notes
 

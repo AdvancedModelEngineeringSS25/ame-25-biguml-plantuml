@@ -8,34 +8,28 @@
  **********************************************************************************/
 
 import { ActivityDiagramParser } from './parser/activity-parser.js';
+import { type BaseDiagramParser } from './parser/base-parser.js';
 import { ClassDiagramParser } from './parser/class-parser.js';
 import { DeploymentDiagramParser } from './parser/deployment-parser.js';
 import { StateMachineDiagramParser } from './parser/state-machine-parser.js';
 import { UseCaseDiagramParser } from './parser/use-case-parser.js';
 
 /**
- * Base interface for different diagram parsers
- */
-export interface DiagramParser {
-    parse(model: any): string;
-}
-
-/**
  * Factory for creating diagram parsers based on diagram type
  */
 export class PlantUMLParserFactory {
-    static getParser(diagramType: string): DiagramParser {
+    static getParser(diagramType: string): BaseDiagramParser {
         switch (diagramType.toLowerCase()) {
-            case 'class':
-                return new ClassDiagramParser();
-            case 'activity':
-                return new ActivityDiagramParser();
-            case 'state_machine':
-                return new StateMachineDiagramParser();
             case 'deployment':
                 return new DeploymentDiagramParser();
+            case 'state_machine':
+                return new StateMachineDiagramParser();
+            case 'class':
+                return new ClassDiagramParser();
             case 'use_case':
                 return new UseCaseDiagramParser();
+            case 'activity':
+                return new ActivityDiagramParser();
             default:
                 throw new Error(`Unsupported diagram type: ${diagramType}`);
         }
