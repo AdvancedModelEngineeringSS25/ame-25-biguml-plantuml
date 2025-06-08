@@ -4,25 +4,36 @@
     <deployment xmi:id="_wuixYCoIEfCGEpV7CSl3_Q" client="_4H8bICKlEfC-j5SEH_SoWg" supplier="_8GG50CKlEfC-j5SEH_SoWg" deployedArtifact="_8GG50CKlEfC-j5SEH_SoWg"/>
   </packagedElement>
   <packagedElement xsi:type="uml:Node" xmi:id="_4YVAgCKlEfC-j5SEH_SoWg" name="Node4">
-    <ownedAttribute xmi:id="_syLphCoIEfCGEpV7CSl3_Q" name="Node1" type="_4t1WcCKlEfC-j5SEH_SoWg" association="_syLpgCoIEfCGEpV7CSl3_Q">
-      <lowerValue xsi:type="uml:LiteralInteger" xmi:id="_syLphSoIEfCGEpV7CSl3_Q" value="1"/>
-      <upperValue xsi:type="uml:LiteralUnlimitedNatural" xmi:id="_syLphioIEfCGEpV7CSl3_Q" value="1"/>
+    <ownedAttribute xmi:id="_gcgfpDflEfCDhMhQw_qZeg" name="" type="_4t1WcCKlEfC-j5SEH_SoWg" association="_gcgfoDflEfCDhMhQw_qZeg">
+      <lowerValue xsi:type="uml:LiteralInteger" xmi:id="_gcgfpTflEfCDhMhQw_qZeg" value="1"/>
+      <upperValue xsi:type="uml:LiteralUnlimitedNatural" xmi:id="_gcgfpjflEfCDhMhQw_qZeg" value="1"/>
     </ownedAttribute>
   </packagedElement>
-  <packagedElement xsi:type="uml:Node" xmi:id="_4jUvkCKlEfC-j5SEH_SoWg" name="Node3"/>
+  <packagedElement xsi:type="uml:Node" xmi:id="_4jUvkCKlEfC-j5SEH_SoWg" name="Node3">
+    <nestedNode xmi:id="_uqOnwTfTEfCDhMhQw_qZeg" name="asdasdas">
+      <nestedNode xmi:id="__kWW0DfkEfCDhMhQw_qZeg" name="Node11">
+        <nestedClassifier xsi:type="uml:Artifact" xmi:id="_AH4hsDflEfCDhMhQw_qZeg" name="Artifact12"/>
+      </nestedNode>
+    </nestedNode>
+  </packagedElement>
   <packagedElement xsi:type="uml:Node" xmi:id="_4t1WcCKlEfC-j5SEH_SoWg" name="Node2">
-    <ownedAttribute xmi:id="_syLpgSoIEfCGEpV7CSl3_Q" name="Node2" type="_4YVAgCKlEfC-j5SEH_SoWg" association="_syLpgCoIEfCGEpV7CSl3_Q">
-      <lowerValue xsi:type="uml:LiteralInteger" xmi:id="_syLpgioIEfCGEpV7CSl3_Q" value="1"/>
-      <upperValue xsi:type="uml:LiteralUnlimitedNatural" xmi:id="_syLpgyoIEfCGEpV7CSl3_Q" value="1"/>
+    <ownedAttribute xmi:id="_gcgfoTflEfCDhMhQw_qZeg" name="" type="_4YVAgCKlEfC-j5SEH_SoWg" association="_gcgfoDflEfCDhMhQw_qZeg">
+      <lowerValue xsi:type="uml:LiteralInteger" xmi:id="_gcgfojflEfCDhMhQw_qZeg" value="1"/>
+      <upperValue xsi:type="uml:LiteralUnlimitedNatural" xmi:id="_gcgfozflEfCDhMhQw_qZeg" value="1"/>
     </ownedAttribute>
   </packagedElement>
   <packagedElement xsi:type="uml:Artifact" xmi:id="_8GG50CKlEfC-j5SEH_SoWg" name="Artifact1">
     <manifestation xmi:id="_zTASMCoIEfCGEpV7CSl3_Q" supplier="_vStskCoIEfCGEpV7CSl3_Q" utilizedElement="_vStskCoIEfCGEpV7CSl3_Q"/>
   </packagedElement>
   <packagedElement xsi:type="uml:Artifact" xmi:id="_8TPW4CKlEfC-j5SEH_SoWg" name="Artifact2"/>
-  <packagedElement xsi:type="uml:CommunicationPath" xmi:id="_syLpgCoIEfCGEpV7CSl3_Q" name="CommunicationPath" memberEnd="_syLpgSoIEfCGEpV7CSl3_Q _syLphCoIEfCGEpV7CSl3_Q"/>
   <packagedElement xsi:type="uml:Dependency" xmi:id="_txKaQCoIEfCGEpV7CSl3_Q" client="_8GG50CKlEfC-j5SEH_SoWg" supplier="_8TPW4CKlEfC-j5SEH_SoWg"/>
   <packagedElement xsi:type="uml:Artifact" xmi:id="_vStskCoIEfCGEpV7CSl3_Q" name="Artifact3">
     <generalization xmi:id="_yqhV4CoIEfCGEpV7CSl3_Q" general="_4jUvkCKlEfC-j5SEH_SoWg"/>
   </packagedElement>
+  <packagedElement xsi:type="uml:Artifact" xmi:id="_p2TwUDfUEfCDhMhQw_qZeg" name="Artifact">
+    <nestedArtifact xsi:type="uml:DeploymentSpecification" xmi:id="_rkqIgDfUEfCDhMhQw_qZeg" name="DeploymentSpecification2"/>
+    <nestedArtifact xsi:type="uml:DeploymentSpecification" xmi:id="_iQLSIDfkEfCDhMhQw_qZeg" name="DeploymentSpecification3"/>
+  </packagedElement>
+  <packagedElement xsi:type="uml:Dependency" xmi:id="_jx1SIDfkEfCDhMhQw_qZeg" client="_rkqIgDfUEfCDhMhQw_qZeg" supplier="_iQLSIDfkEfCDhMhQw_qZeg"/>
+  <packagedElement xsi:type="uml:CommunicationPath" xmi:id="_gcgfoDflEfCDhMhQw_qZeg" name="CommunicationPath" memberEnd="_gcgfoTflEfCDhMhQw_qZeg _gcgfpDflEfCDhMhQw_qZeg"/>
 </uml:Model>

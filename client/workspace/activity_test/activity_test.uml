@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="ASCII"?>
+<uml:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_erUqcDjYEfCvGbd6EDIImg">
+  <packagedElement xsi:type="uml:Activity" xmi:id="_fbaDkDjYEfCvGbd6EDIImg" name="Activity" partition="_fogrcDjYEfCvGbd6EDIImg">
+    <ownedGroup xsi:type="uml:ActivityPartition" xmi:id="_fogrcDjYEfCvGbd6EDIImg" name="ActivityPartition" node="_hVt0IDjYEfCvGbd6EDIImg _3jOQYDsCEfCrJeFcYQ8yZQ _4TkIMDsCEfCrJeFcYQ8yZQ _7ra00DsCEfCrJeFcYQ8yZQ _1dU-EDsGEfCrJeFcYQ8yZQ _EoSFUDsHEfCrJeFcYQ8yZQ _b778kDsIEfCrJeFcYQ8yZQ _dGaLoDsIEfCrJeFcYQ8yZQ"/>
+    <edge xsi:type="uml:ControlFlow" xmi:id="_12Li8DsGEfCrJeFcYQ8yZQ" target="_1dU-EDsGEfCrJeFcYQ8yZQ" source="_4TkIMDsCEfCrJeFcYQ8yZQ"/>
+    <edge xsi:type="uml:ControlFlow" xmi:id="_E6OJ4DsHEfCrJeFcYQ8yZQ" target="_EoSFUDsHEfCrJeFcYQ8yZQ" source="_hVt0IDjYEfCvGbd6EDIImg"/>
+    <edge xsi:type="uml:ControlFlow" xmi:id="_FRgBcDsHEfCrJeFcYQ8yZQ" target="_3jOQYDsCEfCrJeFcYQ8yZQ" source="_EoSFUDsHEfCrJeFcYQ8yZQ"/>
+    <edge xsi:type="uml:ControlFlow" xmi:id="_Fg69gDsHEfCrJeFcYQ8yZQ" target="_4TkIMDsCEfCrJeFcYQ8yZQ" source="_EoSFUDsHEfCrJeFcYQ8yZQ"/>
+    <edge xsi:type="uml:ControlFlow" xmi:id="_ccLi4DsIEfCrJeFcYQ8yZQ" target="_b778kDsIEfCrJeFcYQ8yZQ" source="_3jOQYDsCEfCrJeFcYQ8yZQ"/>
+    <edge xsi:type="uml:ControlFlow" xmi:id="_gB0M0DsIEfCrJeFcYQ8yZQ" target="_dGaLoDsIEfCrJeFcYQ8yZQ" source="_b778kDsIEfCrJeFcYQ8yZQ"/>
+    <edge xsi:type="uml:ControlFlow" xmi:id="_gZUG0DsIEfCrJeFcYQ8yZQ" target="_7ra00DsCEfCrJeFcYQ8yZQ" source="_dGaLoDsIEfCrJeFcYQ8yZQ"/>
+    <ownedNode xsi:type="uml:InitialNode" xmi:id="_hVt0IDjYEfCvGbd6EDIImg" name="InitialNode" outgoing="_E6OJ4DsHEfCrJeFcYQ8yZQ" inPartition="_fogrcDjYEfCvGbd6EDIImg"/>
+    <ownedNode xsi:type="uml:OpaqueAction" xmi:id="_3jOQYDsCEfCrJeFcYQ8yZQ" name="actiop1" incoming="_FRgBcDsHEfCrJeFcYQ8yZQ" outgoing="_ccLi4DsIEfCrJeFcYQ8yZQ" inPartition="_fogrcDjYEfCvGbd6EDIImg"/>
+    <ownedNode xsi:type="uml:OpaqueAction" xmi:id="_4TkIMDsCEfCrJeFcYQ8yZQ" name="actio2" incoming="_Fg69gDsHEfCrJeFcYQ8yZQ" outgoing="_12Li8DsGEfCrJeFcYQ8yZQ" inPartition="_fogrcDjYEfCvGbd6EDIImg"/>
+    <ownedNode xsi:type="uml:ActivityFinalNode" xmi:id="_7ra00DsCEfCrJeFcYQ8yZQ" name="ActivityFinalNode" incoming="_gZUG0DsIEfCrJeFcYQ8yZQ" inPartition="_fogrcDjYEfCvGbd6EDIImg"/>
+    <ownedNode xsi:type="uml:FlowFinalNode" xmi:id="_1dU-EDsGEfCrJeFcYQ8yZQ" name="FlowFinalNode" incoming="_12Li8DsGEfCrJeFcYQ8yZQ" inPartition="_fogrcDjYEfCvGbd6EDIImg"/>
+    <ownedNode xsi:type="uml:DecisionNode" xmi:id="_EoSFUDsHEfCrJeFcYQ8yZQ" name="DecisionNode" incoming="_E6OJ4DsHEfCrJeFcYQ8yZQ" outgoing="_FRgBcDsHEfCrJeFcYQ8yZQ _Fg69gDsHEfCrJeFcYQ8yZQ" inPartition="_fogrcDjYEfCvGbd6EDIImg"/>
+    <ownedNode xsi:type="uml:ForkNode" xmi:id="_b778kDsIEfCrJeFcYQ8yZQ" name="ForkNode" incoming="_ccLi4DsIEfCrJeFcYQ8yZQ" outgoing="_gB0M0DsIEfCrJeFcYQ8yZQ" inPartition="_fogrcDjYEfCvGbd6EDIImg"/>
+    <ownedNode xsi:type="uml:MergeNode" xmi:id="_dGaLoDsIEfCrJeFcYQ8yZQ" name="MergeNode" incoming="_gB0M0DsIEfCrJeFcYQ8yZQ" outgoing="_gZUG0DsIEfCrJeFcYQ8yZQ" inPartition="_fogrcDjYEfCvGbd6EDIImg"/>
+  </packagedElement>
+</uml:Model>

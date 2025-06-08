@@ -2,19 +2,39 @@
 <uml:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_OhvfgF1lEe-IvY5upVMEEw">
   <packagedElement xsi:type="uml:StateMachine" xmi:id="_cobbcF1nEe-zHvSe_BdYlg" name="StateMachine">
     <region xmi:id="_lGsoQF1nEe-zHvSe_BdYlg" name="Region">
-      <transition xmi:id="_C4-lQF1oEe-Q-Zxa_dS6FQ" source="_msb3AF1nEe-zHvSe_BdYlg" target="_BnyDIF1oEe-Q-Zxa_dS6FQ"/>
-      <transition xmi:id="_D4b3IF1oEe-Q-Zxa_dS6FQ" source="_B3IGsF1oEe-Q-Zxa_dS6FQ" target="_msb3AF1nEe-zHvSe_BdYlg"/>
+      <transition xmi:id="_w-t6oDgaEfCDhMhQw_qZeg" source="_wHhz8DgaEfCDhMhQw_qZeg" target="_msb3AF1nEe-zHvSe_BdYlg"/>
+      <transition xmi:id="_jNJksD5bEfC9lcLcmzIhGw" source="_msb3AF1nEe-zHvSe_BdYlg" target="_f6BnED5bEfC9lcLcmzIhGw"/>
+      <transition xmi:id="_j4u4UD5bEfC9lcLcmzIhGw" source="_msb3AF1nEe-zHvSe_BdYlg" target="_gwOPQD5bEfC9lcLcmzIhGw"/>
+      <transition xmi:id="_kclMQD5bEfC9lcLcmzIhGw" source="_gwOPQD5bEfC9lcLcmzIhGw" target="_eLUpkD5bEfC9lcLcmzIhGw"/>
+      <transition xmi:id="_lRMgED5bEfC9lcLcmzIhGw" source="_gwOPQD5bEfC9lcLcmzIhGw" target="_ksbmID5bEfC9lcLcmzIhGw"/>
+      <transition xmi:id="_l9PGsD5bEfC9lcLcmzIhGw" source="_ksbmID5bEfC9lcLcmzIhGw" target="_hK1HoD5bEfC9lcLcmzIhGw"/>
+      <transition xmi:id="_mQTMoD5bEfC9lcLcmzIhGw" source="_eLUpkD5bEfC9lcLcmzIhGw" target="_hK1HoD5bEfC9lcLcmzIhGw"/>
+      <transition xmi:id="_3h0-0D5bEfC9lcLcmzIhGw" source="_hK1HoD5bEfC9lcLcmzIhGw" target="_27ewgD5bEfC9lcLcmzIhGw"/>
       <subvertex xsi:type="uml:Pseudostate" xmi:id="_msb3AF1nEe-zHvSe_BdYlg" name="Pseudostate" kind="choice"/>
-      <subvertex xsi:type="uml:Pseudostate" xmi:id="_4d-mAF1nEe-zHvSe_BdYlg" name="Pseudostate" kind="deepHistory"/>
-      <subvertex xsi:type="uml:FinalState" xmi:id="_AwoYsV1oEe-Q-Zxa_dS6FQ" name="FinalState"/>
-      <subvertex xsi:type="uml:Pseudostate" xmi:id="_BE28QF1oEe-Q-Zxa_dS6FQ" name="Pseudostate" kind="fork"/>
-      <subvertex xsi:type="uml:Pseudostate" xmi:id="_BnyDIF1oEe-Q-Zxa_dS6FQ" name="Pseudostate" kind="join"/>
-      <subvertex xsi:type="uml:Pseudostate" xmi:id="_B3IGsF1oEe-Q-Zxa_dS6FQ" name="Pseudostate" kind="shallowHistory"/>
-      <subvertex xsi:type="uml:State" xmi:id="_FxaK8F1oEe-Q-Zxa_dS6FQ" name="State">
-        <region xmi:id="_KQBrUF1oEe-Q-Zxa_dS6FQ" name="Region">
-          <subvertex xsi:type="uml:Pseudostate" xmi:id="_K0nmIF1oEe-Q-Zxa_dS6FQ" name="Pseudostate" kind="choice"/>
+      <subvertex xsi:type="uml:State" xmi:id="_FxaK8F1oEe-Q-Zxa_dS6FQ" name="InnerState">
+        <region xmi:id="_1cr6wDgaEfCDhMhQw_qZeg" name="Region1">
+          <transition xmi:id="_4CqegDgaEfCDhMhQw_qZeg" source="_3fvXoDgaEfCDhMhQw_qZeg" target="_2ctNUDgaEfCDhMhQw_qZeg"/>
+          <subvertex xsi:type="uml:State" xmi:id="_2ctNUDgaEfCDhMhQw_qZeg" name="test">
+            <region xmi:id="_OjCwYDi5EfCvGbd6EDIImg">
+              <transition xmi:id="_0mQlkD5bEfC9lcLcmzIhGw" source="_OjCwYTi5EfCvGbd6EDIImg" target="_zlByED5bEfC9lcLcmzIhGw"/>
+              <subvertex xsi:type="uml:State" xmi:id="_OjCwYTi5EfCvGbd6EDIImg" name="State"/>
+            </region>
+          </subvertex>
+          <subvertex xsi:type="uml:State" xmi:id="_3fvXoDgaEfCDhMhQw_qZeg" name="test"/>
+        </region>
+        <region xmi:id="_MlcoQDgqEfCDhMhQw_qZeg" name="Region2">
+          <transition xmi:id="_0Jei8D5bEfC9lcLcmzIhGw" source="_zlByED5bEfC9lcLcmzIhGw" target="_zPdKsD5bEfC9lcLcmzIhGw"/>
+          <subvertex xsi:type="uml:Pseudostate" xmi:id="_zPdKsD5bEfC9lcLcmzIhGw" name="Pseudostate" kind="shallowHistory"/>
+          <subvertex xsi:type="uml:Pseudostate" xmi:id="_zlByED5bEfC9lcLcmzIhGw" name="Pseudostate" kind="deepHistory"/>
         </region>
       </subvertex>
+      <subvertex xsi:type="uml:Pseudostate" xmi:id="_wHhz8DgaEfCDhMhQw_qZeg" name="Pseudostate"/>
+      <subvertex xsi:type="uml:State" xmi:id="_eLUpkD5bEfC9lcLcmzIhGw" name="State"/>
+      <subvertex xsi:type="uml:State" xmi:id="_f6BnED5bEfC9lcLcmzIhGw" name="State"/>
+      <subvertex xsi:type="uml:Pseudostate" xmi:id="_gwOPQD5bEfC9lcLcmzIhGw" name="Pseudostate" kind="fork"/>
+      <subvertex xsi:type="uml:Pseudostate" xmi:id="_hK1HoD5bEfC9lcLcmzIhGw" name="Pseudostate" kind="join"/>
+      <subvertex xsi:type="uml:State" xmi:id="_ksbmID5bEfC9lcLcmzIhGw" name="State"/>
+      <subvertex xsi:type="uml:FinalState" xmi:id="_27ewgD5bEfC9lcLcmzIhGw" name="FinalState"/>
     </region>
   </packagedElement>
 </uml:Model>
