@@ -39,6 +39,7 @@ export class ClassDiagramParser extends BaseDiagramParser {
         const cls = (el.eClass || '').toLowerCase();
         if (cls.includes('package')) return 'package';
         if (cls.includes('class')) return 'class';
+        if (cls.includes('abstract')) return 'abstract';
         if (cls.includes('interface')) return 'interface';
         if (cls.includes('enumeration')) return 'enum';
         if (cls.includes('primitivetype')) return 'class';
@@ -102,7 +103,7 @@ export class ClassDiagramParser extends BaseDiagramParser {
 
         // Composition or aggregation
         for (const ownedAttribute of el.ownedAttribute || []) {
-            const client = ownedAttribute?.id;
+            const client = ownedAttribute?.type?.$ref;
             const supplier = el?.id;
             let type = ownedAttribute?.aggregation;
             if (type === 'composite') {
@@ -167,7 +168,7 @@ export class ClassDiagramParser extends BaseDiagramParser {
 
         // Properties (attributes)
         for (const attr of el.ownedAttribute || []) {
-            if (!attr.id) continue;
+            if (!attr.id || attr.name != 'Property') continue;
             this.attributeOwner.set(attr.id, el.id);
             const vis = this.getVisibilityPrefix(attr);
             const t = this.resolveTypeRef(attr.type, this.typeMap);
