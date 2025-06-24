@@ -168,7 +168,8 @@ export class ClassDiagramParser extends BaseDiagramParser {
 
         // Properties (attributes)
         for (const attr of el.ownedAttribute || []) {
-            if (!attr.id || attr.name != 'Property') continue;
+            // Properties must have an ID and no type
+            if (!attr.id || attr.type) continue;
             this.attributeOwner.set(attr.id, el.id);
             const vis = this.getVisibilityPrefix(attr);
             const t = this.resolveTypeRef(attr.type, this.typeMap);
