@@ -7,11 +7,10 @@
  * SPDX-License-Identifier: MIT
  *********************************************************************************/
 
-import { exportToPlantUMLModule } from '@borkdominik-biguml/big-export-to-plantuml/glsp-client';
 import { helloWorldModule } from '@borkdominik-biguml/big-hello-world/glsp-client';
-import { importFromPlantUMLModule } from '@borkdominik-biguml/big-import-from-plantuml/glsp-client';
 import { minimapModule } from '@borkdominik-biguml/big-minimap/glsp-client';
 import { outlineModule } from '@borkdominik-biguml/big-outline/glsp-client';
+import { exportToPlantUMLModule, importFromPlantUMLModule } from '@borkdominik-biguml/big-plantuml/glsp-client';
 import { propertyPaletteModule } from '@borkdominik-biguml/big-property-palette/glsp-client';
 import { ModelResourcesResponseAction } from '@borkdominik-biguml/uml-protocol';
 import {
@@ -37,7 +36,7 @@ import { GLSPIsReadyAction } from '../common/index.js';
 import { UMLDiagramWidget } from './diagram.widget.js';
 import { UMLHostExtensionActionHandler } from './vscode-extension-action-handler.js';
 // GLSP Uses cjs version of inversify, so we need to use require to import it
-// eslint-disable-next-line @typescript-eslint/no-require-imports
+
 //import inversify = require('inversify');
 
 class UMLStarter extends GLSPStarter {

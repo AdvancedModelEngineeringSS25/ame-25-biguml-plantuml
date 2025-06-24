@@ -6,11 +6,10 @@
  *
  * SPDX-License-Identifier: MIT
  *********************************************************************************/
-import { ExportToPlantUMLModule } from '@borkdominik-biguml/big-export-to-plantuml/vscode';
 import { helloWorldModule } from '@borkdominik-biguml/big-hello-world/vscode';
-import { ImportFromPlantUMLModule } from '@borkdominik-biguml/big-import-from-plantuml/vscode';
 import { minimapModule } from '@borkdominik-biguml/big-minimap/vscode';
 import { outlineModule } from '@borkdominik-biguml/big-outline/vscode';
+import { ExportToPlantUMLModule, ImportFromPlantUMLModule } from '@borkdominik-biguml/big-plantuml/vscode';
 import { propertyPaletteModule } from '@borkdominik-biguml/big-property-palette/vscode';
 import { createVSCodeCommonContainer, TYPES, type GLSPDiagramSettings } from '@borkdominik-biguml/big-vscode-integration/vscode';
 import { loadVSCodeNodeContainer, type GLSPServerConfig } from '@borkdominik-biguml/big-vscode-integration/vscode-node';

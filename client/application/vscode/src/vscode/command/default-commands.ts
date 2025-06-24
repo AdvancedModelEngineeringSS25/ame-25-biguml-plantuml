@@ -6,8 +6,7 @@
  *
  * SPDX-License-Identifier: MIT
  *********************************************************************************/
-import { RequestExportToPlantUMLAction } from '@borkdominik-biguml/big-export-to-plantuml';
-import { RequestImportFromPlantUMLAction } from '@borkdominik-biguml/big-import-from-plantuml';
+import { RequestExportToPlantUMLAction, RequestImportFromPlantUMLAction } from '@borkdominik-biguml/big-plantuml';
 import { TYPES, type BIGGLSPVSCodeConnector, type GLSPDiagramSettings } from '@borkdominik-biguml/big-vscode-integration/vscode';
 import { EnableToolsAction, FocusDomAction } from '@borkdominik-biguml/uml-protocol';
 import { CenterAction, FitToScreenAction, RequestExportSvgAction, SelectAllAction } from '@eclipse-glsp/protocol';

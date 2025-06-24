@@ -299,11 +299,10 @@
     "onView:bigUML.outlineView"
   ],
   "dependencies": {
-    "@borkdominik-biguml/big-export-to-plantuml": "*",
     "@borkdominik-biguml/big-hello-world": "*",
-    "@borkdominik-biguml/big-import-from-plantuml": "*",
     "@borkdominik-biguml/big-minimap": "*",
     "@borkdominik-biguml/big-outline": "*",
+    "@borkdominik-biguml/big-plantuml": "*",
     "@borkdominik-biguml/big-property-palette": "*",
     "@borkdominik-biguml/big-vscode-integration": "*",
     "@borkdominik-biguml/uml-glsp-client": "*",
