@@ -30,13 +30,11 @@ To setup this project we need to first clone both repositories given
 bigGLSP:https://github.com/AdvancedModelEngineeringSS25/ame-25-bigglsp-plantuml
 bigUML:https://github.com/AdvancedModelEngineeringSS25/ame-25-biguml-plantuml/tree/main
 
-Then in the bigGLSP repo, go into /plugins/bigGLSP-server-java/ and use ./gradlew prepare to run the integrated gradlewrapper and to build the GLSP project.
+Then in the bigGLSP repo, go into /plugins/bigGLSP-server-java/ and use ./gradlew build to run the integrated gradlewrapper and to build the GLSP project.
 
 Afterwards, in the bigUML repository, go into /server/ and use ./gradlew clean build and afterwards ./gradlew run to start the server
 
 Then lastly we go to the bigUML repository into /client/ and use npm i to install dependencies and then npm run build to build the client. Then in the console type "code ." to start a new instance of VS Code that should make it able to run & debug the bigUML extension framework.
-
-# 4. Explore Codebase
 
 # 5. PlantUML
 
@@ -54,24 +52,19 @@ We are supposed to build an intermediate model representation when importing, an
 
 ### Considerations:
 
-    Export should allow us to select an export parth.
+Export should allow us to select an export parth.
 
-    Import should be imported into the active editor instance. New elements are created by triggering "CreateNodeOperation", "CreateEdgeOperation" and "UpdateElementProperty Action" inside the server.
+Import should be imported into the active editor instance. New elements are created by triggering "CreateNodeOperation", "CreateEdgeOperation" and "UpdateElementProperty Action" inside the server.
 
-    No webviews are necessary for this project.
+No webviews are necessary for this project.
 
-## Aim:
+# 7. Running the extensions:
 
-    - For this task we are aiming to provide a quick to use, error free extension that allows the im-/export of bigUML to plantUML and vice versa.
-    - Not supported diagrams shall be identified by our tool and an appropriate message should be displayed.
+Both extensions require an open bigUML (.uml) file. Thus we setup an appropriate file of our choice. To import, currently only class diagrams are supported. Create a class-diagram file, then press Ctrl+Shift+P, and look for bigUML: Import from PlantUML. Then choose category "class" to import class diagrams, then select in the openening file explorer the plant uml class diagram you wish to import. Given the plantuml file is valid, the components will be parsed into a bigUML diagram. The functional logic for this is found in /client/packages/big-import-from-plantuml/src/vscode/import-from-plantUML.handler.ts . The code uses the plant-uml-parser package to translate a plantuml file into JSON. We then need to further annotate our JSON with appropriate typing for the elements. Afterwards the function importGLSP in the file starts to create Operations for each element found. The operations are finally executed as a batch operation, which also triggers a re-render on the bigUML side. The components should be visible by then.
 
-## Potential Challenges:
+For export the entire technical documentation can be read in the plantUML-export.md file.
 
-    - bigUML and plantUML both have diagrams included that are not yet supported in the opposing tool. The im-/export of such diagrams needs to be handled properly.
-
-## Potential Solutions:
-
-# 7. Resources
+# 8. Resources
 
 Diagram Editors Boosted - bigUML introduction and new features presented https://www.youtube.com/watch?v=RBbI_QBzwl4
 
