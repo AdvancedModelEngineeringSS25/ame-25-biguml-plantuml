@@ -20,13 +20,13 @@ This document describes the implementation of the PlantUML export feature for bi
 
 ### Core Components
 
-1. **ExportToPlantUMLActionHandler** - Main handler that orchestrates the export process
+1. **ExportToPlantUMLActionHandler** - Main handler for the export functionality
 
 2. **PlantUMLParserFactory** - Factory class that provides diagram-specific parsers
 
 3. **BaseDiagramParser** - Abstract base class for all diagram parsers with common logic and interfaces
 
-4. **Specialized Parsers** - Individual parsers for each supported diagram type
+4. **Individual Parsers** - Parsers for each supported diagram type
 
 ## Implementation Details
 
@@ -50,24 +50,24 @@ This approach aligns with PlantUML's syntax structure, where elements are typica
 
 Since every diagram type has a different type of JSON structure, each parser implements or defines the following:
 
+3. **childProps**: This array holds a list of property names that include nested children of elements in this diagram type, used to traverse the JSON structure
+
 ```typescript
 protected  abstract  childProps:  readonly  string[];
 ```
 
-This array holds a list of property names that include nested children of elements in this diagram type, used to traverse the JSON structure
+4. **arrowMap**: This map specifies the names and type for the arrows that are used in the relationships of this diagram type
 
 ```typescript
 protected  abstract  arrowMap:  Record<string, string>;
 ```
 
-This map specifies the names and type for the arrows that are used in the relationships of this diagram type
+5. **visitElements/visitRelations**: These functions are called to traverse the JSON and specify when an object is added to the element or relationship map
 
 ```typescript
 protected  abstract  visitElement: (el:  any) =>  void;
 protected  abstract  visitRelations: (el:  any) =>  void;
 ```
-
-These functions are called to traverse the JSON and specify when an object is added to the element or relationship map
 
 ### Export Process Flow
 
@@ -154,7 +154,6 @@ break;
 }
 
 }
-
 ```
 
 ## Problems Encountered
@@ -215,7 +214,7 @@ for (const g of el.generalization || []) {
 
 2. **Logging** - The logging does not include if an element or relationship could not be parsed (Difficult because JSON often includes redundant information and we want to skip on purpose)
 
-3. **Validation** - No validation if generated PlantUML syntax is correct and compiles
+3. **Validation** - No validation wether generated PlantUML syntax is correct and compiles
 
 ## Future Work
 
@@ -246,7 +245,6 @@ for (const g of el.generalization || []) {
 ### File Structure
 
 ```
-
 src/
 
 ├── vscode/
@@ -273,7 +271,7 @@ src/
 
 ### Bugs
 
-- Deployment Diagram - **device**:a Element breaks the diagram
+- Deployment Diagram - **device**: Element breaks the diagram
 - Deployment Diagram - **CommunicationPath**: Deleting adds embedding into nodes
 - Use Case Diagram - **Actor** have a very small click box when trying to add an Association and Generalization
 - Activity Diagram - Some elements can be added to activities without activity partitions like Initial and Final nodes. Sometimes adding them and refreshing makes them disappear, but still be visible in the diagram outline. Sometimes it breaks diagram like when adding edges between them and refreshing.
